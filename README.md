@@ -80,8 +80,19 @@ Let's start
         - **Application title:** Sales-Commission
         - **Application namespace:** ns
         - **Add deployment configuration to MTA project (/home/user/projects/sales-commission/mta.yaml):** Yes
+    - **DeploymentConfiguration**
+        - **Please choose the target:** Cloud Foundry
+        - **Destination name:** None
 
     Application will take some seconds to generate. You can now see **sales** folder inside **app** folder. Take time to inspect the files inside it. Check the Component.js file inside the webapp folder. It inherits logic from **sap/fe/core/AppComponent** class which is managed by SAP Fiori and provides all the necessary services required for the template to work properly.
+3. Refer the [package.json](package.json). You will see few scripts are added. Start the server with following command
+    ```
+    npm run watch-sales
+    ```
+    
+    **OR**
+
+4. You can also type **Fiori: Open Application Info** from command pallete and click on **Preview Application**. This will start the application
 
 ## Learn More
 
