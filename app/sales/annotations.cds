@@ -53,25 +53,39 @@ annotate service.Sales with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'customer_ID',
-            Value : customer_ID,
+            Value : ID,
+            Label : '{i18n>Id1}',
         },
         {
             $Type : 'UI.DataField',
             Value : title,
+            Label : '{i18n>Title}',
         },
         {
             $Type : 'UI.DataField',
-            Label : 'status_code',
+            Label : '{i18n>Customerid1}',
+            Value : customer_ID,
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : '{i18n>Statuscode1}',
             Value : status_code,
+            Criticality : status.criticality,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : product.ID,
+            Label : '{i18n>Id}',
         },
         {
             $Type : 'UI.DataField',
             Value : quantity,
+            Label : '{i18n>Quantity}',
         },
         {
             $Type : 'UI.DataField',
-            Value : productPrice,
+            Value : product.price,
+            Label : '{i18n>Price}',
         },
     ],
     UI.SelectionFields : [
@@ -150,7 +164,10 @@ annotate service.Sales with {
 annotate service.Sales with {
     status @(
         Common.Label : '{i18n>Statuscode}',
-        Common.Text : status.descr,
+        Common.Text : {
+            $value : status.descr,
+            ![@UI.TextArrangement] : #TextOnly
+        },
         Common.ValueListWithFixedValues : true,
         )
 };

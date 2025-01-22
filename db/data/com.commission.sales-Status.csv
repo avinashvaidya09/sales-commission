@@ -1,5 +1,5 @@
 code,descr,criticality
-N,New,1
-I,In Process,2
-H,On Hold,3
+N,New,3
+I,In Process,5
+H,On Hold,2
 C,Closed,4
