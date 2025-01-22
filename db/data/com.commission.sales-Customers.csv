@@ -1,0 +1,7 @@
+ID,firstName,lastName,email,phone,createdAt,createdBy
+123456789,John,Doe,john.doe@example.com,+1234567890,2025-01-19T10:00:00.000Z,admin
+987654321,Jane,Smith,jane.smith@example.com,+1234567891,2025-01-19T10:05:00.000Z,admin
+456789123,Emily,Johnson,emily.johnson@example.com,+1234567892,2025-01-19T10:10:00.000Z,admin
+234567891,Michael,Brown,michael.brown@example.com,+1234567893,2025-01-19T10:15:00.000Z,admin
+876543219,Sarah,Davis,sarah.davis@example.com,+1234567894,2025-01-19T10:20:00.000Z,admin
+567891234,David,Wilson,david.wilson@example.com,+1234567895,2025-01-19T10:25:00.000Z,admin

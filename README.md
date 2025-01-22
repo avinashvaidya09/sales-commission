@@ -1,0 +1,82 @@
+# Getting Started
+
+Welcome to your new project.
+
+
+## 1. Set up the *sales-commission* CAP Project
+
+1. Create *CAP Project* from template. 
+    - Give project name of your choice
+    - Select Runtime. For this project it is Node.js
+    - Choose which way to deploy your project. For this project it is *Cloud Foundry - MTA Deployment*
+    - Add sample content to your project. For this project I selected *Minimal Sample*
+
+2. This will create a essential structure to start the project.
+    ```
+    - order-management-app
+        |_ app
+        |_ db
+        |_ srv
+        |_.gitignore
+        |_mta.yaml
+        |_package.json
+        |_README.md
+    ```
+
+3. File or Folder | Purpose
+   ---------------|----------
+   `app/`         | content for UI frontends goes here
+   `db/`          | your domain models and data go here
+   `srv/`         | your service models and code go here
+   `.gitignore`.  | git ignore file
+   `mta.yaml`.    | multi target application deployment descriptor
+   `package.json` | project metadata and configuration
+   `README.md`    | this getting started guide
+
+4. Open a new terminal and run `cds watch`.
+
+5. Start adding content, in [db/schema.cds](db/schema.cds). Define sales entities required for the application.
+
+6. Define the service. I have created file - [srv/sales-service.cds](srv/sales-service.cds). 
+
+7. Add data to the in memory database.
+    ```
+    cds add data 
+    ```
+8. Now, fill the test data. The above command will generate csv files in the [db/data](db/data) folder. You can copy that data or reuse the csv files in your project.
+
+10. Open the mta.yaml and understand the structure of the file. You will see modules and resources. [Refer for details](https://www.sap.com/documents/2016/06/e2f618e4-757c-0010-82c7-eda71af511fa.html)
+
+11. **You have successfully** 
+    - Created a CAP project, 
+    - Defined the domain models, 
+    - Added service for the models and 
+    - Added test data till now.
+
+## Add standard Fiori Elements
+
+**What are fiori elements?**
+ - Fiori elements provides designs for UI patterns and out of the box floorplans for common enterprise application use cases.
+ - Using annotations, one can create UI applications using OData services without JavaScript UI coding. 
+ - The Fiori UI application uses MVC pattern.
+ - SAP UI5 reads the metadata and the annotations of the OData service and leverages views at the application startup.
+
+Let's start
+
+1. Make sure the application is running and open *Command Pallete*.
+
+2. Type **Fiori: Open Application Generator**
+    - **Template Selection:** List Report Page
+        - **Data Source:** Use a Local CAP Project
+        - **Choose your CAP project:** sales-commision
+        - **OData service:** SalesService
+    - **Entity Selection**
+        - **Main Entity:** Sales
+        - **Navigation Entoty:** None
+        - **Automatically add table columns to the list page and a section to the object page if none already exists?:** Yes
+        - **Table Type:** responsive
+
+
+## Learn More
+
+Learn more at https://cap.cloud.sap/docs/get-started/.

@@ -1,0 +1,7 @@
+ID,name,description,category,image,price,currency_code,createdAt,createdBy
+100001,"Bronco","Sports Utility Vehicle","SUV","bronco.jpg",35000.00,USD,2025-01-20T10:00:00.000Z,admin
+100002,"Avalon","Luxury Sedan","SEDAN","avalon.jpg",32000.00,EUR,2025-01-20T10:00:00.000Z,admin
+100003,"Cybertruck","Feature rich hatchback","TRUCK","cybertruck.jpg",60000.00,USD,2025-01-20T10:00:00.000Z,admin
+100004,"Rav4","Sports Utility Vehicle","SUV","rav4.jpg",38000.00,USD,2025-01-20T10:00:00.000Z,admin
+100005,"Accord","Luxury Sedan","SEDAN","accord.jpg",28000.00,EUR,2025-01-20T10:00:00.000Z,admin
+100006,"Polo","Feature rich hatchback","HATCHBACK","polo.jpg",25000.00,USD,2025-01-20T10:00:00.000Z,admin
