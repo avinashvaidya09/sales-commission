@@ -17,6 +17,7 @@ entity Sales : cuid, managed {
   salePrice      : Decimal(15, 2)  @title: 'Sale Price';
   totalSalePrice : Decimal(15, 2)  @title: 'Total Sale Price';
   currency       : Association to Currencies;
+  commission     : Decimal(15, 2)  @title: 'Sales Rep Commission';
   comment        : Composition of many {
                      key ID        : UUID;
                          timestamp : type of managed : createdAt;
@@ -26,13 +27,13 @@ entity Sales : cuid, managed {
 }
 
 entity Products : managed {
-  key ID        : String @title : 'Product ID';
-  name        : String         @title: 'Product Name';
-  description : String;
-  category    : String;
-  image       : String         @title: 'Looks Like';
-  price       : Decimal(15, 2) @title: 'Price';
-  currency    : Association to Currencies;
+  key ID          : String         @title: 'Product ID';
+      name        : String         @title: 'Product Name';
+      description : String;
+      category    : String;
+      image       : String         @title: 'Looks Like';
+      price       : Decimal(15, 2) @title: 'Price';
+      currency    : Association to Currencies;
 }
 
 /**

@@ -145,10 +145,6 @@ annotate service.Sales with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : customer_ID,
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : createdAt,
             },
             {
@@ -163,11 +159,6 @@ annotate service.Sales with @(
                 $Type : 'UI.DataField',
                 Value : modifiedBy,
             },
-            {
-                $Type : 'UI.DataField',
-                Value : currency_code,
-                Label : '{i18n>Currencycode}',
-            },
         ],
     },
     UI.FieldGroup #i18nProductDetails : {
@@ -175,8 +166,13 @@ annotate service.Sales with @(
         Data : [
             {
                 $Type : 'UI.DataField',
+                Value : product_ID,
+                Label : '{i18n>Productid}',
+            },
+            {
+                $Type : 'UI.DataField',
                 Value : product.category,
-                Label : '{i18n>Category1}',
+                Label : '{i18n>Category}',
             },
             {
                 $Type : 'UI.DataField',
@@ -184,20 +180,13 @@ annotate service.Sales with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : product.price,
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : product.description,
-                Label : 'description',
+                Label : '{i18n>Description2}',
             },
             {
                 $Type : 'UI.DataField',
-                Value : product.currency.code,
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.ID,
+                Value : product.price,
+                Label : '{i18n>Price1}',
             },
         ],
     },
@@ -220,6 +209,15 @@ annotate service.Sales with @(
                 $Type : 'UI.DataField',
                 Value : totalSalePrice,
                 Label : '{i18n>TotalSalePrice1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : commission,
+                Label : '{i18n>SalesRepCommission}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product.currency.code,
             },
         ],
     },
@@ -263,33 +261,36 @@ annotate service.Sales with {
 };
 
 annotate service.Sales with {
-    product @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'Products',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : product_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'name',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'description',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'category',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'image',
-            },
-        ],
-    }
+    product @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Products',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : product_ID,
+                    ValueListProperty : 'ID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'name',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'description',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'category',
+                },
+            ],
+        },
+        Common.Text : {
+            $value : product_ID,
+            ![@UI.TextArrangement] : #TextSeparate
+        },
+        Common.ValueListWithFixedValues : false,
+        )
 };
 
 annotate service.Sales with {
@@ -353,6 +354,14 @@ annotate service.Products with {
             ],
         },
         Common.ValueListWithFixedValues : true,
+        Common.Text : name,
         )
+};
+
+annotate service.Sales with {
+    ID @Common.Text : {
+        $value : product_ID,
+        ![@UI.TextArrangement] : #TextSeparate
+    }
 };
 
