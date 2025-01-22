@@ -365,3 +365,15 @@ annotate service.Sales with {
     }
 };
 
+annotate service.Sales with {
+    productPrice @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Sales with {
+    commission @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Sales with {
+    totalSalePrice @Common.FieldControl : #ReadOnly
+};
+

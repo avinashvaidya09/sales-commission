@@ -1,5 +1,8 @@
 code,descr,criticality
 N,New,3
 I,In Process,5
+P,Approval Pending,6
+R,Rejected,1
+C,Cancelled,7
 H,On Hold,2
-C,Closed,4
+A,Approved,4
