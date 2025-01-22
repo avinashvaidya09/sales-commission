@@ -92,8 +92,11 @@ Let's start
     
     **OR**
 
-4. You can also type **Fiori: Open Application Info** from command pallete and click on **Preview Application**. This will start the application
+4. You can also type **Fiori: Open Application Info** from command pallete and click on **Preview Application**. This will start the application and you can see UI with list of sales.
 
-## Learn More
+5. Now start configuring the list view and detail page. From the application info page, you can click on **Open Page Map**.
+I am not detailing each and every step. For quick reference you can refer step 4 onwards of this [tutorial](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#c0db5fa0-7601-422c-836c-e7fcab184e56)
+
+## Learn More 
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
