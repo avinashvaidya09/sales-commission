@@ -8,23 +8,25 @@ using {
 namespace com.commission.sales;
 
 entity Sales : cuid, managed {
-  customer     : Association to Customers;
-  title        : String          @title: 'Title';
-  status       : Association to Status default 'N';
-  product      : Association to Products; 
-  quantity     : Int32 default 1 @title: 'Quantity';
-  productPrice : Decimal(15, 2)  @title: 'Product Price';
-  salePrice    : Decimal(15, 2)  @title: 'Sale Price';
-  currency     : Association to Currencies;
-  comment      : Composition of many {
-                   key ID        : UUID;
-                       timestamp : type of managed : createdAt;
-                       author    : type of managed : createdBy;
-                       message   : String;
-                 };
+  customer       : Association to Customers;
+  title          : String          @title: 'Title';
+  status         : Association to Status default 'N';
+  product        : Association to Products;
+  quantity       : Int32 default 1 @title: 'Quantity';
+  productPrice   : Decimal(15, 2)  @title: 'Product Price';
+  salePrice      : Decimal(15, 2)  @title: 'Sale Price';
+  totalSalePrice : Decimal(15, 2)  @title: 'Total Sale Price';
+  currency       : Association to Currencies;
+  comment        : Composition of many {
+                     key ID        : UUID;
+                         timestamp : type of managed : createdAt;
+                         author    : type of managed : createdBy;
+                         message   : String;
+                   };
 }
 
-entity Products : cuid, managed {
+entity Products : managed {
+  key ID        : String @title : 'Product ID';
   name        : String         @title: 'Product Name';
   description : String;
   category    : String;
@@ -66,9 +68,9 @@ entity Status : CodeList {
       criticality : Integer;
 }
 
-entity CommissionConfig: cuid, managed {
+entity CommissionConfig : cuid, managed {
   commissionPercent : Decimal(15, 2);
-  year: Integer;
+  year              : Integer;
 }
 
 type EMailAddress : String;

@@ -168,11 +168,6 @@ annotate service.Sales with @(
                 Value : currency_code,
                 Label : '{i18n>Currencycode}',
             },
-            {
-                $Type : 'UI.DataField',
-                Value : totalPrice,
-                Label : '{i18n>TotalSalePrice}',
-            },
         ],
     },
     UI.FieldGroup #i18nProductDetails : {
@@ -180,8 +175,8 @@ annotate service.Sales with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Value : product.ID,
-                Label : '{i18n>Id2}',
+                Value : product.category,
+                Label : '{i18n>Category1}',
             },
             {
                 $Type : 'UI.DataField',
@@ -189,38 +184,20 @@ annotate service.Sales with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : product.description,
-                Label : '{i18n>Description1}',
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.category,
-                Label : '{i18n>Category}',
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.createdAt,
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.createdBy,
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.currency_code,
-                Label : '{i18n>Currencycode1}',
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.modifiedAt,
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : product.modifiedBy,
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : product.price,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product.description,
+                Label : 'description',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product.currency.code,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product.ID,
             },
         ],
     },
@@ -241,7 +218,8 @@ annotate service.Sales with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : totalPrice,
+                Value : totalSalePrice,
+                Label : '{i18n>TotalSalePrice1}',
             },
         ],
     },
@@ -359,5 +337,22 @@ annotate service.Sales.comment with @(
 
 annotate service.Sales with {
     currency @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Products with {
+    ID @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Products',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : ID,
+                    ValueListProperty : 'ID',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+        )
 };
 
