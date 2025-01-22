@@ -94,8 +94,11 @@ Let's start
 
 4. You can also type **Fiori: Open Application Info** from command pallete and click on **Preview Application**. This will start the application and you can see UI with list of sales.
 
-5. Now start configuring the list view and detail page. From the application info page, you can click on **Open Page Map**.
-I am not detailing each and every step. For quick reference you can refer step 4 onwards of this [tutorial](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#c0db5fa0-7601-422c-836c-e7fcab184e56)
+5. Now start configuring the list view. From the application info page, you can click on **Open Page Map**.
+I am not detailing each and every step. For quick reference you can refer step 4  of this [Configuring List View](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#0180ca2a-11d5-4d49-91bf-3dbb3a3347df)
+
+6. Now start configuring the detail page. From the application info page, you can click on **Open Page Map**.
+I am not detailing each and every step. For quick reference you can refer step 5  of this [Configuring Object Page View](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#9f8b34a1-68f8-41fa-af2a-2cf74428a909)
 
 ## Learn More 
 

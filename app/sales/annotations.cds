@@ -7,55 +7,63 @@ annotate service.Sales with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'customer_ID',
+                Label : '{i18n>Customerid2}',
                 Value : customer_ID,
             },
             {
                 $Type : 'UI.DataField',
                 Value : title,
+                Label : '{i18n>Title1}',
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'status_code',
+                Label : '{i18n>Statuscode2}',
                 Value : status_code,
             },
             {
                 $Type : 'UI.DataField',
-                Value : quantity,
+                Value : createdAt,
             },
             {
                 $Type : 'UI.DataField',
-                Value : productPrice,
+                Value : customer.email,
+                Label : '{i18n>Email}',
             },
             {
                 $Type : 'UI.DataField',
-                Value : salePrice,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'currency_code',
-                Value : currency_code,
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : totalPrice,
+                Value : customer.phone,
+                Label : '{i18n>Phone}',
             },
         ],
     },
     UI.Facets : [
         {
+            $Type : 'UI.CollectionFacet',
+            Label : '{i18n>Overview}',
+            ID : 'SaleDetails',
+            Facets : [
+                {
+                    $Type : 'UI.ReferenceFacet',
+                    ID : 'GeneratedFacet1',
+                    Label : '{i18n>GeneralInformation}',
+                    Target : '@UI.FieldGroup#GeneratedGroup',
+                },
+                {
+                    $Type : 'UI.ReferenceFacet',
+                    Label : '{i18n>Details}',
+                    ID : 'Details',
+                    Target : '@UI.FieldGroup#Details1',
+                },
+            ],
+        },
+        {
             $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
-            Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup',
+            Label : '{i18n>Notes}',
+            ID : 'i18nNotes',
+            Target : 'comment/@UI.LineItem#i18nNotes',
         },
     ],
     UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Value : ID,
-            Label : '{i18n>Id1}',
-        },
         {
             $Type : 'UI.DataField',
             Value : title,
@@ -92,6 +100,69 @@ annotate service.Sales with @(
         status_code,
         customer_ID,
     ],
+    UI.HeaderInfo : {
+        Title : {
+            $Type : 'UI.DataField',
+            Value : title,
+        },
+        TypeName : '',
+        TypeNamePlural : '',
+        ImageUrl : product.image,
+        Description : {
+            $Type : 'UI.DataField',
+            Value : customer.name,
+        },
+        TypeImageUrl : '',
+    },
+    UI.FieldGroup #Details : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+        ],
+    },
+    UI.FieldGroup #Details1 : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : ID,
+                Label : 'ID',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : title,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : customer_ID,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : createdAt,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : createdBy,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : modifiedAt,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : modifiedBy,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : currency_code,
+                Label : '{i18n>Currencycode}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : totalPrice,
+                Label : '{i18n>TotalSalePrice}',
+            },
+        ],
+    },
 );
 
 annotate service.Sales with {
@@ -185,4 +256,22 @@ annotate service.Status with {
         ![@UI.TextArrangement] : #TextOnly,
     }
 };
+
+annotate service.Sales.comment with @(
+    UI.LineItem #i18nNotes : [
+        {
+            $Type : 'UI.DataField',
+            Value : message,
+            Label : '{i18n>Message}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : author,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : timestamp,
+        },
+    ]
+);
 

@@ -11,7 +11,7 @@ service SalesService {
             *,
             (
                 quantity * salePrice
-            ) as totalPrice : Decimal(15, 2) @title : 'Total Sale Price'
+            ) as totalPrice : Decimal(15, 2) @title : 'TotalSalePrice'
         }
 
     
@@ -25,5 +25,7 @@ service SalesService {
     entity CommissionConfig as projection on sales.CommissionConfig;
 
 }
+
+annotate SalesService.Sales with @odata.draft.enabled;
 
 //annotate SalesService with @(requires: 'sales_representative');
