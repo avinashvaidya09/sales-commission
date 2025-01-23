@@ -61,10 +61,14 @@ entity Addresses : cuid, managed {
 
 entity Status : CodeList {
   key code        : String enum {
-        new        = 'N';
-        in_process = 'I';
-        on_hold    = 'H';
-        closed     = 'C';
+        new        = 'NEW';
+        in_process = 'INP';
+        on_hold    = 'HLD';
+        closed     = 'CLS';
+        approved= 'APR';
+        approval_pending = 'PEN';
+        rejected = 'REJ';
+        cancelled = 'CAN';
       };
       criticality : Integer;
 }

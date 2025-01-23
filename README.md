@@ -100,6 +100,12 @@ I am not detailing each and every step. For quick reference you can refer step 4
 6. Now start configuring the detail page. From the application info page, you can click on **Open Page Map**.
 I am not detailing each and every step. For quick reference you can refer step 5  of this [Configuring Object Page View](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#9f8b34a1-68f8-41fa-af2a-2cf74428a909)
 
+7. Let us add some custom logic to calculate the total sale price using sale price and quantity and save it in the sales table.
+    - Create sales-service.js inside srv folder.
+    - I have added event handlers for validations and updating commission.
+    - Take a look [srv/sales-service.js](srv/sales-service.js)
+
+
 ## Learn More 
 
 Learn more at https://cap.cloud.sap/docs/get-started/.

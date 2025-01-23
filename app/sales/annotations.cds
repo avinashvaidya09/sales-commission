@@ -177,6 +177,7 @@ annotate service.Sales with @(
             {
                 $Type : 'UI.DataField',
                 Value : product.name,
+                Label : '{i18n>ProductName}',
             },
             {
                 $Type : 'UI.DataField',
@@ -187,6 +188,10 @@ annotate service.Sales with @(
                 $Type : 'UI.DataField',
                 Value : product.price,
                 Label : '{i18n>Price1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : product.modifiedAt,
             },
         ],
     },
@@ -208,7 +213,7 @@ annotate service.Sales with @(
             {
                 $Type : 'UI.DataField',
                 Value : totalSalePrice,
-                Label : '{i18n>TotalSalePrice1}',
+                Label : '{i18n>TotalSalePrice}',
             },
             {
                 $Type : 'UI.DataField',
@@ -233,7 +238,12 @@ annotate service.Sales with {
                 {
                     $Type : 'Common.ValueListParameterInOut',
                     LocalDataProperty : customer_ID,
+                    ValueListProperty : 'name',
+                },
+                {
+                    $Type : 'Common.ValueListParameterOut',
                     ValueListProperty : 'ID',
+                    LocalDataProperty : customer.ID,
                 },
                 {
                     $Type : 'Common.ValueListParameterOut',
@@ -269,11 +279,11 @@ annotate service.Sales with {
                 {
                     $Type : 'Common.ValueListParameterInOut',
                     LocalDataProperty : product_ID,
-                    ValueListProperty : 'ID',
+                    ValueListProperty : 'name',
                 },
                 {
                     $Type : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty : 'name',
+                    ValueListProperty : 'ID',
                 },
                 {
                     $Type : 'Common.ValueListParameterDisplayOnly',
@@ -302,13 +312,6 @@ annotate service.Sales with {
         },
         Common.ValueListWithFixedValues : true,
         )
-};
-
-annotate service.Customers with {
-    ID @Common.Text : {
-        $value : name,
-        ![@UI.TextArrangement] : #TextSeparate,
-    }
 };
 
 annotate service.Status with {
@@ -375,5 +378,20 @@ annotate service.Sales with {
 
 annotate service.Sales with {
     totalSalePrice @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Customers with {
+    ID @Common.Text : name
+};
+
+annotate service.Customers with {
+    name @Common.Text : ID
+};
+
+annotate service.Products with {
+    name @Common.Text : {
+        $value : ID,
+        ![@UI.TextArrangement] : #TextSeparate
+    }
 };
 
