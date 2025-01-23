@@ -105,6 +105,11 @@ I am not detailing each and every step. For quick reference you can refer step 5
     - I have added event handlers for validations and updating commission.
     - Take a look [srv/sales-service.js](srv/sales-service.js)
 
+8. **You have successfully** 
+    - Created a standard FIORI UI web app
+    - Created sales list report page and sales detail page, 
+    - Enabled Create and Edit functionality. 
+    - Added custom event handlers
 
 ## Learn More 
 
