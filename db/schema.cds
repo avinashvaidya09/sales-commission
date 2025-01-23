@@ -8,22 +8,23 @@ using {
 namespace com.commission.sales;
 
 entity Sales : cuid, managed {
-  customer       : Association to Customers;
-  title          : String          @title: 'Title';
-  status         : Association to Status default 'N';
-  product        : Association to Products;
-  quantity       : Int32 default 1 @title: 'Quantity';
-  productPrice   : Decimal(15, 2)  @title: 'Product Price';
-  salePrice      : Decimal(15, 2)  @title: 'Sale Price';
-  totalSalePrice : Decimal(15, 2)  @title: 'Total Sale Price';
-  currency       : Association to Currencies;
-  commission     : Decimal(15, 2)  @title: 'Sales Rep Commission';
-  comment        : Composition of many {
-                     key ID        : UUID;
-                         timestamp : type of managed : createdAt;
-                         author    : type of managed : createdBy;
-                         message   : String;
-                   };
+  key ID             : UUID            @Core.Computed;
+      customer       : Association to Customers;
+      title          : String not null @title: 'Title';
+      status         : Association to Status default 'NEW';
+      product        : Association to Products;
+      quantity       : Int32 default 1 @title: 'Quantity';
+      productPrice   : Decimal(15, 2)  @title: 'Product Price';
+      salePrice      : Decimal(15, 2)  @title: 'Sale Price';
+      totalSalePrice : Decimal(15, 2)  @title: 'Total Sale Price';
+      currency       : Association to Currencies;
+      commission     : Decimal(15, 2)  @title: 'Sales Rep Commission';
+      comment        : Composition of many {
+                         key ID        : UUID;
+                             timestamp : type of managed : createdAt;
+                             author    : type of managed : createdBy;
+                             message   : String;
+                       };
 }
 
 entity Products : managed {
@@ -61,14 +62,14 @@ entity Addresses : cuid, managed {
 
 entity Status : CodeList {
   key code        : String enum {
-        new        = 'NEW';
-        in_process = 'INP';
-        on_hold    = 'HLD';
-        closed     = 'CLS';
-        approved= 'APR';
+        new              = 'NEW';
+        in_process       = 'INP';
+        on_hold          = 'HLD';
+        closed           = 'CLS';
+        approved         = 'APR';
         approval_pending = 'PEN';
-        rejected = 'REJ';
-        cancelled = 'CAN';
+        rejected         = 'REJ';
+        cancelled        = 'CAN';
       };
       criticality : Integer;
 }

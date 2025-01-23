@@ -137,7 +137,7 @@ annotate service.Sales with @(
             {
                 $Type : 'UI.DataField',
                 Value : ID,
-                Label : 'ID',
+                Label : '{i18n>Id2}',
             },
             {
                 $Type : 'UI.DataField',
@@ -267,6 +267,7 @@ annotate service.Sales with {
             $value : customer_ID,
             ![@UI.TextArrangement] : #TextSeparate
         },
+        Common.FieldControl : #Mandatory,
         )
 };
 
@@ -300,6 +301,7 @@ annotate service.Sales with {
             ![@UI.TextArrangement] : #TextSeparate
         },
         Common.ValueListWithFixedValues : false,
+        Common.FieldControl : #Mandatory,
         )
 };
 
@@ -362,13 +364,6 @@ annotate service.Products with {
 };
 
 annotate service.Sales with {
-    ID @Common.Text : {
-        $value : product_ID,
-        ![@UI.TextArrangement] : #TextSeparate
-    }
-};
-
-annotate service.Sales with {
     productPrice @Common.FieldControl : #ReadOnly
 };
 
@@ -391,6 +386,17 @@ annotate service.Customers with {
 annotate service.Products with {
     name @Common.Text : {
         $value : ID,
+        ![@UI.TextArrangement] : #TextSeparate
+    }
+};
+
+annotate service.Sales with {
+    title @Common.FieldControl : #Mandatory
+};
+
+annotate service.Sales with {
+    ID @Common.Text : {
+        $value : customer.ID,
         ![@UI.TextArrangement] : #TextSeparate
     }
 };

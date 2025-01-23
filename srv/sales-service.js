@@ -48,7 +48,7 @@ class SalesService extends cds.ApplicationService {
     async calculateSalesCommission(request) {
 
         const data = request.data;
-        if (data.status_code == "PEN" && data.totalSalePrice != null) {
+        if (data.status_code == "APR" && data.totalSalePrice != null) {
             const sale = await cds.tx(request).run(SELECT.one.from('Sales').where({ID: data.ID}));;
             const createdAtDateObj = new Date(sale.createdAt);
             const yearOfSale = createdAtDateObj.getFullYear();
