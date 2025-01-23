@@ -13,24 +13,31 @@ class SalesService extends cds.ApplicationService {
         this.before(["CREATE", "UPDATE"], "Sales", (request) => this.updateProductPriceOnSaleRecord(request));
         this.before("UPDATE", "Sales", (request) => this.updatePricing(request));
         this.before("UPDATE", "Sales", (request) => this.calculateSalesCommission(request));
-        this.after("UPDATE", "Sales", async(request) => {
-            
-        });
         return super.init();
     }
 
-
+    /**
+     * Validates is the sales record is already in CAN, REJ, APR or CLS status.
+     * 
+     * @param {*} request 
+     * @throws {Error} Returns 404 if the sales record is not found.
+     * @throws {Error} Returns 400 is sales record is already closed.
+     */
     async validateOnUpdate(request) {
         const data = request.data;
         const currentSale = await cds.tx(request).run(SELECT.one.from('Sales').where({ID: data.ID}));
         if (!currentSale) {
-            return request.reject(404, 'Sale record with ID ${ID} not found');
+            return request.reject(404, `Sale record with ID ${ID} not found`);
         }
         if (SalesService.SALES_CLOSED_STATUS_CODES.includes(currentSale.status_code)) {
             return request.reject(400, 'Cannot modify this sale transaction as it is already closed');
         }
     }
 
+    /**
+     * Updates product price on sales record for future reference. This price will be used for further commission calculations.
+     * @param {*} request 
+     */
     async updateProductPriceOnSaleRecord(request) {
         const data = request.data;
         if(data.productPrice == null) {
@@ -40,6 +47,10 @@ class SalesService extends cds.ApplicationService {
        
     }
 
+    /**
+     * Updated total sale price on the sales record.
+     * @param {*} request 
+     */
     updatePricing(request) {
         const data = request.data;
         if (data.salePrice == null && data.productPrice == null) {
@@ -51,6 +62,14 @@ class SalesService extends cds.ApplicationService {
         data.totalSalePrice = totalSalePrice;
     }
 
+    /**
+     * Calculates sales commision based on the commision configuration.
+     * Commission calculation is only done when the status of the sales
+     * record is updated to APR-Approved and only sales manager can update 
+     * the approved status.
+     * 
+     * @param {*} request 
+     */
     async calculateSalesCommission(request) {
         const data = request.data;
         if(request.user.is("sales_representative") && data.status_code == "APR") {
