@@ -25,5 +25,24 @@
   },
   "sapux": [
     "app/sales"
-  ]
+  ],
+  "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "sales-rep@carfox.com":{
+              "password": "admin",
+              "roles": ["sales_representative"]
+            },
+            "sales-manager@carfox.com":{
+              "password": "admin",
+              "roles": ["sales_manager"]
+            }
+          }
+        }
+      }
+    }
+  }
 }

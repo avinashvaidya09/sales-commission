@@ -105,11 +105,62 @@ I am not detailing each and every step. For quick reference you can refer step 5
     - I have added event handlers for validations and updating commission.
     - Take a look [srv/sales-service.js](srv/sales-service.js)
 
-8. **You have successfully** 
+**You have successfully** 
     - Created a standard FIORI UI web app
     - Created sales list report page and sales detail page, 
     - Enabled Create and Edit functionality. 
     - Added custom event handlers
+
+
+## Add Authorization on local
+
+1. Let us start my adding manager service and added annotations for role based access control.
+    ```
+    /**
+     * Service used by sales manager to approve sale and commision.
+     */
+
+    service SalesManagerService {
+
+        @title: 'Sales Transactions'  @description: 'Stores sale detail for the sales representative with final sale price.'
+        entity Sales            as projection on sales.Sales;
+        @readonly
+        entity Products         as projection on sales.Products;
+        @readonly
+        entity Customers        as projection on sales.Customers;
+    }
+
+    annotate SalesService with @(requires: 'sales_representative');
+
+    annotate SalesManagerService with @(requires: 'sales_manager');
+    ```
+2. Add user for local testing. Refer [package.json](package.json). Fragment provided below
+    ```
+    "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "sales-rep@carfox.com":{
+              "password": "admin",
+              "roles": ["sales_representative"]
+            },
+            "sales-manager@carfox.com":{
+              "password": "admin",
+              "roles": ["sales_manager"]
+            }
+          }
+        }
+      }
+    }
+    ```
+3. Add a launch page on local to mimic build work zone page - [app/launchpage.html](app/launchpage.html)
+
+**You have successfully** 
+    - Added authorization on local
+    - Added 2 roles for sales rep and sales manager 
+    - Added validation that only sales manager can approve the sales record.
 
 ## Learn More 
 

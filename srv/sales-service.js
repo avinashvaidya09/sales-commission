@@ -1,4 +1,6 @@
-const cds = require('@sap/cds')
+const cds = require('@sap/cds');
+const { message } = require('@sap/cds/lib/log/cds-error');
+
 
 class SalesService extends cds.ApplicationService {
 
@@ -11,8 +13,12 @@ class SalesService extends cds.ApplicationService {
         this.before(["CREATE", "UPDATE"], "Sales", (request) => this.updateProductPriceOnSaleRecord(request));
         this.before("UPDATE", "Sales", (request) => this.updatePricing(request));
         this.before("UPDATE", "Sales", (request) => this.calculateSalesCommission(request));
+        this.after("UPDATE", "Sales", async(request) => {
+            
+        });
         return super.init();
     }
+
 
     async validateOnUpdate(request) {
         const data = request.data;
@@ -46,8 +52,10 @@ class SalesService extends cds.ApplicationService {
     }
 
     async calculateSalesCommission(request) {
-
         const data = request.data;
+        if(request.user.is("sales_representative") && data.status_code == "APR") {
+            return request.reject(403, "Only sales managers can approve sales. Please contact your Sales Manager");
+        }
         if (data.status_code == "APR" && data.totalSalePrice != null) {
             const sale = await cds.tx(request).run(SELECT.one.from('Sales').where({ID: data.ID}));;
             const createdAtDateObj = new Date(sale.createdAt);
