@@ -3,88 +3,99 @@ ID: sales-commission
 description: A simple CAP project.
 version: 1.0.0
 modules:
-- name: sales-commission-srv
-  type: nodejs
-  path: gen/srv
-  requires:
-  - name: sales-commission-db
-  provides:
-  - name: srv-api
-    properties:
-      srv-url: ${default-url}
-  parameters:
-    buildpack: nodejs_buildpack
-    readiness-health-check-http-endpoint: /health
-    readiness-health-check-type: http
-  build-parameters:
-    builder: npm
-- name: sales-commission-db-deployer
-  type: hdb
-  path: gen/db
-  requires:
-  - name: sales-commission-db
-  parameters:
-    buildpack: nodejs_buildpack
-- name: sales-commission-app-content
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: sales-commission-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+  - name: sales-commission-srv
+    type: nodejs
+    path: gen/srv
     requires:
-    - artifacts:
-      - nssales.zip
-      name: nssales
-      target-path: resources/
-- name: nssales
-  type: html5
-  path: app/sales
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
+      - name: sales-commission-db
+      - name: sales-commission-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-http-endpoint: /health
+      readiness-health-check-type: http
+    build-parameters:
+      builder: npm
+  - name: sales-commission-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: sales-commission-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: sales-commission-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: sales-commission-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nssales.zip
+          name: nssales
+          target-path: resources/
+  - name: nssales
+    type: html5
+    path: app/sales
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
 resources:
-- name: sales-commission-db
-  type: com.sap.xs.hdi-container
-  parameters:
-    service: hana
-    service-plan: hdi-shared
-- name: sales-commission-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-name: sales-commission-html5-service
-    service-plan: app-host
-- name: sales-commission-destination-service
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      HTML5Runtime_enabled: false
-      init_data:
-        instance:
-          destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
-          existing_destinations_policy: update
-      version: 1.0.0
-    service: destination
-    service-name: sales-commission-destination-service
-    service-plan: lite
+  - name: sales-commission-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: sales-commission-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: sales-commission-html5-service
+      service-plan: app-host
+  - name: sales-commission-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: sales-commission-destination-service
+      service-plan: lite
+  - name: sales-commission-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: sales-commission-${org}-${space}
+        tenant-mode: dedicated
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-  - builder: custom
-    commands:
-    - npm ci
-    - npx cds build --production
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

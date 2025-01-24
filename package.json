@@ -7,7 +7,9 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^8.6.1",
-    "express": "^4"
+    "express": "^4",
+    "@cap-js/hana": "^1",
+    "@sap/xssec": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.8.0",
@@ -32,17 +34,28 @@
         "auth": {
           "kind": "mocked",
           "users": {
-            "sales-rep@carfox.com":{
+            "sales-rep@carfox.com": {
               "password": "admin",
-              "roles": ["sales_representative"]
+              "roles": [
+                "sales_representative"
+              ]
             },
-            "sales-manager@carfox.com":{
+            "sales-manager@carfox.com": {
               "password": "admin",
-              "roles": ["sales_manager"]
+              "roles": [
+                "sales_manager"
+              ]
             }
           }
         }
+      },
+      "[production]": {
+        "db": "hana",
+        "auth": "xsuaa"
       }
+    },
+    "sql": {
+      "native_hana_associations": false
     }
   }
 }

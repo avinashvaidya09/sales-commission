@@ -1,0 +1,31 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.sales_representative",
+      "description": "sales_representative"
+    },
+    {
+      "name": "$XSAPPNAME.sales_manager",
+      "description": "sales_manager"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "sales_representative",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.sales_representative"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "sales_manager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.sales_manager"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

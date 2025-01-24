@@ -3,7 +3,7 @@
 Welcome to your new project.
 
 
-## 1. Set up the *sales-commission* CAP Project
+# 1. Set up the *sales-commission* CAP Project
 
 1. Create *CAP Project* from template. 
     - Give project name of your choice
@@ -161,6 +161,31 @@ I am not detailing each and every step. For quick reference you can refer step 5
     - Added authorization on local
     - Added 2 roles for sales rep and sales manager 
     - Added validation that only sales manager can approve the sales record.
+
+# Preparation to deploy on BTP
+
+Till now we have done an exceptional work of developing a full stack application, fixing bugs and 
+refining it. But we have to make it cloud ready and eventually deploy it in production. Let us upgrade
+the application to be production ready.
+
+## Set up SAP HANA Cloud
+
+1. Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+    ```
+    cds add hana --for production
+    ```
+    The above command will generate files like - undeploy.json, .hdiconfig as well.
+    Deployments in BTP are done using production profile by default.
+    
+    Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
+
+2. Next is to configure XSUAA service for authentication and trust management. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+    ```
+    cds add xsuaa --for production
+    ```
+    The above command will generate file - [xs-security.json](xs-security.json). The above command already will create role template and scope as per the annotations defined in the [srv/sales-service.cds](srv/sales-service.cds). Check it out.
+
+    Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
 
 ## Learn More 
 
