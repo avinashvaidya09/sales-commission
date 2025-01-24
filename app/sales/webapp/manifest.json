@@ -17,11 +17,26 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/sales/",
+        "uri": "odata/v4/sales/",
         "type": "OData",
         "settings": {
           "annotations": [],
           "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "sales-display": {
+          "semanticObject": "sales",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "subTitle": "{{flpSubtitle}}",
+          "icon": "sap-icon://crm-sales",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -138,5 +153,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "salescommission.service"
   }
 }

@@ -53,7 +53,9 @@
         "db": "hana",
         "auth": "xsuaa"
       },
-      "html5-repo": true
+      "html5-repo": true,
+      "destinations": true,
+      "workzone": true
     },
     "sql": {
       "native_hana_associations": false

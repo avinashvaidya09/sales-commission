@@ -2,6 +2,18 @@ _schema-version: 3.3.0
 ID: sales-commission
 description: A simple CAP project.
 version: 1.0.0
+
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        - mkdir -p resources
+
 modules:
   - name: sales-commission-srv
     type: nodejs
@@ -9,6 +21,7 @@ modules:
     requires:
       - name: sales-commission-db
       - name: sales-commission-auth
+      - name: sales-commission-destination
     provides:
       - name: srv-api
         properties:
@@ -19,6 +32,7 @@ modules:
       readiness-health-check-type: http
     build-parameters:
       builder: npm
+
   - name: sales-commission-db-deployer
     type: hdb
     path: gen/db
@@ -26,20 +40,22 @@ modules:
       - name: sales-commission-db
     parameters:
       buildpack: nodejs_buildpack
-  - name: sales-commission-app-content
+
+  - name: sales-commission-app-deployer
     type: com.sap.application.content
     path: .
     requires:
-      - name: sales-commission-repo-host
+      - name: sales-commission-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
-      build-result: resources
+      build-result: resources/
       requires:
-        - artifacts:
+        - name: nssales
+          artifacts:
             - nssales.zip
-          name: nssales
           target-path: resources/
+
   - name: nssales
     type: html5
     path: app/sales
@@ -54,50 +70,51 @@ modules:
       supported-platforms:
         []
 
-  - name: sales-commission-app-deployer
+  - name: sales-commission-destinations
     type: com.sap.application.content
-    path: gen
     requires:
-      - name: sales-commission-repo-host
+      - name: sales-commission-auth
+        parameters:
+          service-key:
+            name: sales-commission-auth-key
+      - name: sales-commission-html5-repo-host
+        parameters:
+          service-key:
+            name: sales-commission-html5-repo-host-key
+      - name: srv-api
+      - name: sales-commission-destination
         parameters:
           content-target: true
     build-parameters:
-      build-result: app/
-      requires:
-        - name: salescommissionsales
-          artifacts:
-            - sales.zip
-          target-path: app/
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: sales-commission-html5-repository
+              ServiceInstanceName: sales-commission-html5-repo-host
+              ServiceKeyName: sales-commission-html5-repo-host-key
+              sap.cloud.service: salescommission.service
+            - Name: sales-commission-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: sales-commission-auth
+              ServiceKeyName: sales-commission-auth-key
+              sap.cloud.service: salescommission.service
+
 resources:
   - name: sales-commission-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-  - name: sales-commission-repo-host
+
+  - name: sales-commission-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-name: sales-commission-html5-service
       service-plan: app-host
-  - name: sales-commission-destination-service
-    type: org.cloudfoundry.managed-service
-    parameters:
-      config:
-        HTML5Runtime_enabled: false
-        init_data:
-          instance:
-            destinations:
-              - Authentication: NoAuthentication
-                Name: ui5
-                ProxyType: Internet
-                Type: HTTP
-                URL: https://ui5.sap.com
-            existing_destinations_policy: update
-        version: 1.0.0
-      service: destination
-      service-name: sales-commission-destination-service
-      service-plan: lite
+
   - name: sales-commission-auth
     type: org.cloudfoundry.managed-service
     parameters:
@@ -105,14 +122,38 @@ resources:
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: sales-commission-${org}-${space}
+        xsappname: sales-commission-${space}
         tenant-mode: dedicated
-parameters:
-  deploy_mode: html5-repo
-  enable-parallel-deployments: true
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
+
+  - name: sales-commission-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: sales-commission-srv-api
+                URL: ~{srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+              - Name: ui5
+                URL: https://ui5.sap.com
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+  
+

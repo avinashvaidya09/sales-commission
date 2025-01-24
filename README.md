@@ -162,7 +162,7 @@ I am not detailing each and every step. For quick reference you can refer step 5
     - Added 2 roles for sales rep and sales manager 
     - Added validation that only sales manager can approve the sales record.
 
-# Preparation to deploy on BTP
+# Prepare the application for Cloud (BTP)
 
 Till now we have done an exceptional work of developing a full stack application, fixing bugs and 
 refining it. But we have to make it cloud ready and eventually deploy it in production. Let us upgrade
@@ -170,7 +170,7 @@ the application to be production ready.
 
 ## Set up SAP HANA Cloud
 
-1. Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
     ```
     cds add hana --for production
     ```
@@ -179,7 +179,8 @@ the application to be production ready.
     
     Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
 
-2. Next is to configure XSUAA service for authentication and trust management. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+## Add XSUAA support
+Next is to configure XSUAA service for authentication and trust management. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
     ```
     cds add xsuaa --for production
     ```
@@ -187,29 +188,144 @@ the application to be production ready.
 
     Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
 
-3. Next is to prepare the application to be part of HTML5 application repository. Obvious question is why we need this step? A quick read - [HTML5 Application Repository](https://help.sap.com/docs/btp/sap-business-technology-platform/html5-application-repository)
+## Add HTML5 application repository
+Next is to prepare the application to be part of HTML5 application repository. Obvious question is why we need this step? A quick read - [HTML5 Application Repository](https://help.sap.com/docs/btp/sap-business-technology-platform/html5-application-repository)
     ```
     cds add html5-repo
     ```
     The above command will add html5 repo related configuration in the [mta.yaml](mta.yaml). Take a look at the changes in github working tree.
 
-4. Navigate to **app/incidents** and run
+## Build your application for BTP
+
+1. Navigate to **app/incidents** and run
     ```
     npm install
     ```
-5. Come back to the root of your project and test your build
+2. Come back to the root of your project and test your build
     ```
     cds build --production
     ```
     There should not be any errors and your should see the last line as - **build completed in ___ ms**
 
-6. Ensure your project is running on local and remember check in the code. You have done a lot of hard work to reach here.
+3. Ensure your project is running on local and remember check in the code. You have done a lot of hard work to reach here.
 
-7. **You have successfully**
+4. **You have successfully**
     - Added production profile
     - Added HANA cloud client
     - Added support of XSUAA service
     - Added HTML5 application repository configuration
+
+
+# Prepare for deployment on BTP
+
+1. Before deploying your application on BTP, ensure the below pre-requisites are met. Without these the application deployment will fail
+as the supporting entitlements will not be available. **NOTE: Installing the services is not in the scope of this tutorial**
+    Name                                          | Plan
+    -------------------------------------         |---------------
+      **SAP Build Work Zone**                     | Standard Edition or Free              
+      **SAP HANA Cloud**                          | hana-free
+      **SAP HANA Cloud**                          | tools (Application)
+      **SAP HANA Schemas & HDI Containers**       | hdi-shared
+      **SAP Continuous Integration and Delivery** | free (Application)
+
+2. All the above installations are very well provided in this [tutorial](https://developers.sap.com/tutorials/prepare-btp-cf.html#40f3498c-7a3e-4dc8-9a9c-f204c4972731). Please take time to go through it. **NOTE: Give names relevant to your application. You do not have to follow the names provided in the tutorial but adhere to naming conventions**
+
+3. Add configuration for SAP Build WorkZone by running following command
+    ```
+    cds add workzone-standard
+    ```
+    The above command will generate destination module and resources in [mta.yaml](mta.yaml) which will be used during deployment. Take time to
+    browse through the mta.yaml and understand the modules and resources. This is the crux of your application.
+
+4. Refer [app/sales/webapp/manifest.json](app/sales/webapp/manifest.json) file. I added 3 more attriutes on top of generated *crossNavigation* section. This is how it looks like. I added  **title**, **subTitle** and **icon**. This will be shown on the application card on Build Work Zone. Remember to add title and subtitle in [app/sales/webapp/i18n/i18n.properties](app/sales/webapp/i18n/i18n.properties)
+    ```
+    "crossNavigation": {
+      "inbounds": {
+        "sales-display": {
+          "semanticObject": "sales",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "subTitle": "{{flpSubtitle}}",
+          "icon": "sap-icon://crm-sales",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+    ```
+
+5. Important part - Remember to remove forward **/** from the uri parameter. The dataSource URI must be relative to the base URL.
+    ```
+    "dataSources": {
+      "mainService": {
+        "uri": "odata/v4/sales/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+      ```
+
+6. Open [mta.yaml](mta.yaml). Update the **build-result** and **target-path** as shown in the below snippet.
+    ```
+    - name: sales-commission-app-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: sales-commission-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources/
+      requires:
+        - name: salescommissionsales
+          artifacts:
+            - sales.zip
+          target-path: resources/
+    ```
+
+7. Open [mta.yaml](mta.yaml). Update the build parameters with additional command as shown below.
+    ```
+    build-parameters:
+    before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        - mkdir -p resources
+    ```
+8. Your [mta.yaml](mta.yaml) should be ready for deployment now.
+
+# Deploy application on SAP BTP - Cloud Foundry Environment.
+
+1. Run multi target application build
+    ```
+    mbt build
+    ```
+    For sure there will be some errors. Check the logs and try to resolve the errors. If the build is successfull, you should see **sales-commission_1.0.0.mtar** file generated in [mta_archives](mta_archives) folder.
+
+2. Login to your sub account
+    ```
+    cf api <API-ENDPOINT>
+    cf login --sso
+    cf target -o <ORG> -s <SPACE>
+    ```
+
+3. Run the following command to deploy the tar file
+    ```
+    cf deploy mta_archives/sales-commission_1.0.0.mtar
+    ```
+    
+    As per my experience, here you will encounter errors. There will be some issues in dependencies of the modules. Be patient. Read the errors
+    properly and solve them one by one. Most of the issues will be in [mta.yaml](mta.yaml) Refer the mta.yaml in this repository to compare with yours.
+    
+4. Check if services are created properly
+    ```
+    cf services
+    ```
 
 ## Learn More 
 
