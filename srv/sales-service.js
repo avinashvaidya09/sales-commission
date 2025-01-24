@@ -40,7 +40,8 @@ class SalesService extends cds.ApplicationService {
      */
     async updateProductPriceOnSaleRecord(request) {
         const data = request.data;
-        if(data.productPrice == null) {
+        const currentSale = await cds.tx(request).run(SELECT.one.from('Sales').where({ID: data.ID}));
+        if(data.productPrice == null || data.product_ID != currentSale.product_ID) {
             const currentProductRecord = await cds.tx(request).run(SELECT.one.from('Products').where({ID: data.product_ID}));
             data.productPrice = currentProductRecord.price;
         }
