@@ -187,6 +187,30 @@ the application to be production ready.
 
     Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
 
+3. Next is to prepare the application to be part of HTML5 application repository. Obvious question is why we need this step? A quick read - [HTML5 Application Repository](https://help.sap.com/docs/btp/sap-business-technology-platform/html5-application-repository)
+    ```
+    cds add html5-repo
+    ```
+    The above command will add html5 repo related configuration in the [mta.yaml](mta.yaml). Take a look at the changes in github working tree.
+
+4. Navigate to **app/incidents** and run
+    ```
+    npm install
+    ```
+5. Come back to the root of your project and test your build
+    ```
+    cds build --production
+    ```
+    There should not be any errors and your should see the last line as - **build completed in ___ ms**
+
+6. Ensure your project is running on local and remember check in the code. You have done a lot of hard work to reach here.
+
+7. **You have successfully**
+    - Added production profile
+    - Added HANA cloud client
+    - Added support of XSUAA service
+    - Added HTML5 application repository configuration
+
 ## Learn More 
 
 Learn more at https://cap.cloud.sap/docs/get-started/.

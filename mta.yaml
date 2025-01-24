@@ -49,8 +49,25 @@ modules:
       commands:
         - npm install
         - npm run build:cf
+        - npm ci
+        - npm run build
       supported-platforms:
         []
+
+  - name: sales-commission-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: sales-commission-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: salescommissionsales
+          artifacts:
+            - sales.zip
+          target-path: app/
 resources:
   - name: sales-commission-db
     type: com.sap.xs.hdi-container
