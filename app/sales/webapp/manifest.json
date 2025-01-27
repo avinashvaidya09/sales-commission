@@ -31,8 +31,8 @@
           "semanticObject": "sales",
           "action": "display",
           "title": "{{flpTitle}}",
-          "subTitle": "{{flpSubtitle}}",
           "icon": "sap-icon://crm-sales",
+          "info":"{{flpInfo}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
