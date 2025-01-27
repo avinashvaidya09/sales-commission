@@ -1,4 +1,4 @@
-using SalesService as service from '../../srv/sales-service';
+using ProcessorService as service from '../../srv/services';
 using from '../../db/schema';
 
 annotate service.Sales with @(

@@ -3,7 +3,7 @@ using {com.commission.sales as sales} from '../db/schema';
 /*
 * Service used by Sales Service representatives and managers.
 */
-service SalesService {
+service ProcessorService {
 
     @title: 'Sales Transactions'  @description: 'Stores sale detail for the sales representative with final sale price.'
     entity Sales            as projection on sales.Sales;
@@ -14,13 +14,13 @@ service SalesService {
 
 }
 
-annotate SalesService.Sales with @odata.draft.enabled;
+annotate ProcessorService.Sales with @odata.draft.enabled;
 
 /**
  * Service used by sales manager to approve sale and commision.
  */
 
-service SalesManagerService {
+service ManagerService {
 
     @title: 'Sales Transactions'  @description: 'Stores sale detail for the sales representative with final sale price.'
     entity Sales            as projection on sales.Sales;
@@ -30,7 +30,7 @@ service SalesManagerService {
     entity Customers        as projection on sales.Customers;
 }
 
-annotate SalesService with @(requires: 'sales_representative');
+annotate ProcessorService with @(requires: 'sales_representative');
 
-annotate SalesManagerService with @(requires: 'sales_manager');
+annotate ManagerService with @(requires: 'sales_manager');
 

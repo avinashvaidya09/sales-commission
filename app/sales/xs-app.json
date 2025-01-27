@@ -3,17 +3,17 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^(.*)$",
-      "target": "$1",
-      "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
-    },
-    {
       "source": "^/?odata/(.*)$",
       "target": "/odata/$1",
       "destination": "sales-commission-srv-api",
       "authenticationType": "xsuaa",
       "csrfProtection": true
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
     }
   ]
 }

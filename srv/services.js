@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 
-class SalesService extends cds.ApplicationService {
+class ProcessorService extends cds.ApplicationService {
 
     // Constants
     static SALES_CLOSED_STATUS_CODES = ['CAN', 'REJ', 'APR', 'CLS'];
@@ -28,7 +28,7 @@ class SalesService extends cds.ApplicationService {
         if (!currentSale) {
             return request.reject(404, `Sale record with ID ${ID} not found`);
         }
-        if (SalesService.SALES_CLOSED_STATUS_CODES.includes(currentSale.status_code)) {
+        if (ProcessorService.SALES_CLOSED_STATUS_CODES.includes(currentSale.status_code)) {
             return request.reject(400, 'Cannot modify this sale transaction as it is already closed');
         }
     }
@@ -91,4 +91,4 @@ class SalesService extends cds.ApplicationService {
     }
 }
 
-module.exports = { SalesService }
+module.exports = { ProcessorService }
