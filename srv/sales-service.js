@@ -1,5 +1,4 @@
 const cds = require('@sap/cds');
-const { message } = require('@sap/cds/lib/log/cds-error');
 
 
 class SalesService extends cds.ApplicationService {

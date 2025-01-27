@@ -326,6 +326,11 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
     ```
     cf services
     ```
+5. Once the application is deployed successfully on BTP, assign roles to your user. Follow the steps mentioned in the [tutorial](https://developers.sap.com/tutorials/user-role-assignment.html)
+
+6. To integrate your application with SAP Build Work Zone, follow the steps mentioned in the [tutorial](https://developers.sap.com/tutorials/integrate-with-work-zone.html)
+
+
 
 ## Learn More 
 
