@@ -69,7 +69,7 @@ Let's start
     - **Template Selection:** List Report Page
         - **Data Source:** Use a Local CAP Project
         - **Choose your CAP project:** sales-commision
-        - **OData service:** SalesService
+        - **OData service:** ProcessorService
     - **Entity Selection**
         - **Main Entity:** Sales
         - **Navigation Entoty:** None
@@ -260,7 +260,7 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
     ```
     "dataSources": {
       "mainService": {
-        "uri": "odata/v4/sales/",
+        "uri": "odata/v4/processor/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -330,7 +330,20 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 6. To integrate your application with SAP Build Work Zone, follow the steps mentioned in the [tutorial](https://developers.sap.com/tutorials/integrate-with-work-zone.html)
 
+# Troubleshooting tips
 
+1. If you have error loading your application after deployment on BTP please compare the below files properly.
+ - [mta.yaml](mta.yaml)
+ - [package.json](package.json)
+ - [xs-security.json](xs-security.json)
+ - [xs-app.json](app/sales/xs-app.json)
+ - [ui5.yaml](app/sales/ui5.yaml)
+ - [ui5-deploy.yaml](app/sales/ui5-deploy.yaml)
+ - [manifest.json](app/sales/webapp/manifest.json)
+
+2. Ensure you have the role collection created and assigned to your user BTP.
+
+2. Also, ensure you open the workzone site in an incognito mode or different browser. The reason is, we tend to do development on same browser and then open the site also in same browser. At times, the cache causes problem with authentication and app router is not able to reach the OData service.
 
 ## Learn More 
 
