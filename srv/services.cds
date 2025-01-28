@@ -28,6 +28,8 @@ service ManagerService {
     entity Products         as projection on sales.Products;
     @readonly
     entity Customers        as projection on sales.Customers;
+
+    entity CommissionConfig as projection on sales.CommissionConfig;
 }
 
 annotate ProcessorService with @(requires: 'sales_representative');
