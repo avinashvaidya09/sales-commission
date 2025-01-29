@@ -72,7 +72,7 @@ Let's start
         - **OData service:** ProcessorService
     - **Entity Selection**
         - **Main Entity:** Sales
-        - **Navigation Entoty:** None
+        - **Navigation Entity:** None
         - **Automatically add table columns to the list page and a section to the object page if none already exists?:** Yes
         - **Table Type:** responsive
     -  **Project Attributes**
@@ -343,7 +343,72 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 2. Ensure you have the role collection created and assigned to your user BTP.
 
-2. Also, ensure you open the workzone site in an incognito mode or different browser. The reason is, we tend to do development on same browser and then open the site also in same browser. At times, the cache causes problem with authentication and app router is not able to reach the OData service.
+3. Also, ensure you open the workzone site in an incognito mode or different browser. The reason is, we tend to do development on same browser and then open the site also in same browser. At times, the cache causes problem with authentication and app router is not able to reach the OData service.
+
+### You have successfully created a full stack application and enabled it on Build Workzone on BTP.
+
+# Let's add freestyle UI5 app to the existing project.
+
+1. Type **Fiori: Open Application Generator**
+    - **Template Selection:** Basic
+        - **Data Source:** Use a Local CAP Project
+        - **Choose your CAP project:** sales-commision
+        - **OData service:** ManagerService
+    - **Entity Selection**
+        - **View Name:** App
+    -  **Project Attributes**
+        - **Module name:** commissionconfig
+        - **Application title:** Commission-Config
+        - **Application namespace:** ns
+        - **Add deployment configuration to MTA project (/home/user/projects/sales-commission/mta.yaml):** Yes
+    - **DeploymentConfiguration**
+        - **Please choose the target:** Cloud Foundry
+        - **Destination name:** sales-commission-srv-api
+
+2. I have created an app name **commissionconfig**. This app will be used by sales manager to configure commission config.
+
+3. Observe the folder structure and files inside the commissionconfig app. Go through each file and try to understand.
+  ```
+  - commissionconfig
+    |_webapp
+      |_controller
+      |_css
+      |_i18n
+      |_model
+      |_test
+      |_view
+    |_Component.js
+    |_index.html
+    |_manifest.json
+  |_annotations.cds
+  |_package.json
+  |_README.md
+  |_ui5.yaml
+  |_xs-app.json
+  ```
+
+4. You will see App.view.xml and App.controller.js created in view and controller folder respectively. App.view.xml is the root of the application. You will see the **Shell** element which is the holder of the complete app.
+  ```
+  <Shell id="_IDGenAppShell">
+        <App id="app"/>
+  </Shell>
+  ```
+
+5. You can start adding your own views and controllers. For example as a starter, I have added Main.view.xml and Main.controller.js to display the **CommissionConfiguration**. This is the starting point of your application. 
+
+6. Updated the launch page on local to mimic build work zone page - [app/launchpage.html](app/launchpage.html)
+  ```
+  "commission-config": {
+                        title: 'Commission-Config',
+                        description: 'Commsission Config',
+                        additionalInformation: 'SAPUI5.Component=ns.commissionconfig',
+                        applicationType: 'URL',
+                        url: "./commissionconfig/webapp",
+                        navigationMode: 'embedded'
+                    }
+  ```
+
+7. Start adding custom code, new views and/or controllers and custom style.
 
 ## Learn More 
 

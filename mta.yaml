@@ -53,6 +53,10 @@ modules:
           artifacts:
             - sales.zip
           target-path: resources/
+        - name: salescommissionconfig
+          artifacts:
+            - commissionconfig.zip
+          target-path: resources/
 
   - name: salescommissionsales
     type: html5
@@ -98,26 +102,7 @@ modules:
               ServiceKeyName: sales-commission-auth-key
               sap.cloud.service: salescommission.service
 
-  - name: sales-commission-app-deployer
-    type: com.sap.application.content
-    path: gen
-    requires:
-      - name: sales-commission-html5-repo-host
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: app/
-      requires:
-        - name: salescommissioncommissionconfig
-          artifacts:
-            - commissionconfig.zip
-          target-path: app/
-        - name: salescommissionsales
-          artifacts:
-            - sales.zip
-          target-path: app/
-
-  - name: salescommissioncommissionconfig
+  - name: salescommissionconfig
     type: html5
     path: app/commissionconfig
     build-parameters:

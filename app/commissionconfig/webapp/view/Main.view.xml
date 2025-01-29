@@ -1,0 +1,51 @@
+<mvc:View controllerName="ns.commissionconfig.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="_IDGenMainPage"  title="{i18n>title}">
+        <Panel id="_IDGenPanel">
+            <Table id="commissionConfigTable" items="{commissionConfig>/}">
+                <headerToolbar>
+                    <Toolbar id="commissionConfigTableToolBar">
+                        <Title id="commissionConfigTableToolBarTitle" text="{i18n>CommissionConfiguration}"></Title>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="_IDGenColumn">
+                        <Text id="_IDGenText" text="{i18n>ID}" />
+                    </Column>
+                    <Column id="_IDGenColumn1">
+                        <Text id="_IDGenText1" text="{i18n>Year}" />
+                    </Column>
+                    <Column id="_IDGenColumn2">
+                        <Text id="_IDGenText2" text="{i18n>CommissionPercentage}" />
+                    </Column>
+                    <Column id="_IDGenColumn3">
+                        <Text id="_IDGenText3" text="{i18n>CreatedBy}" />
+                    </Column>
+                    <Column id="_IDGenColumn4">
+                        <Text id="_IDGenText4" text="{i18n>CreatedAt}" />
+                    </Column>
+                    <Column id="_IDGenColumn5">
+                        <Text id="_IDGenText5" text="{i18n>ModifiedBy}" />
+                    </Column>
+                    <Column id="_IDGenColumn6">
+                        <Text id="_IDGenText6" text="{i18n>ModifiedAt}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem">
+                        <cells>
+                            <Text text="{commissionConfig>ID}" />
+                            <Text text="{path: 'commissionConfig>year', type: 'sap.ui.model.type.String'}" />
+                            <Text text="{commissionConfig>commissionPercent}" />
+                            <Text text="{commissionConfig>createdBy}" />
+                            <Text text="{commissionConfig>createdAt}" />
+                            <Text text="{commissionConfig>modifiedBy}" />
+                            <Text text="{commissionConfig>modifiedAt}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </Panel>
+    </Page>
+</mvc:View>

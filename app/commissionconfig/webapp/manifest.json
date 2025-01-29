@@ -52,8 +52,8 @@
       }
     },
     "contentDensities": {
-      "compact": true,
-      "cozy": true
+      "compact": false,
+      "cozy": false
     },
     "models": {
       "i18n": {
@@ -91,17 +91,17 @@
       },
       "routes": [
         {
-          "name": "RouteApp",
+          "name": "RouteMain",
           "pattern": ":?query:",
           "target": [
-            "TargetApp"
+            "TargetMain"
           ]
         }
       ],
       "targets": {
-        "TargetApp": {
-          "id": "App",
-          "name": "App"
+        "TargetMain": {
+          "id": "Main",
+          "name": "Main"
         }
       }
     },
