@@ -1,12 +1,14 @@
 <mvc:View controllerName="ns.commissionconfig.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="_IDGenMainPage"  title="{i18n>title}">
-        <Panel id="_IDGenPanel">
+    <Page id="_IDGenMainPage">
+        <Panel id="_IDGenPanel" class="sapUiResponsiveMargin" width="auto">
             <Table id="commissionConfigTable" items="{commissionConfig>/}">
                 <headerToolbar>
                     <Toolbar id="commissionConfigTableToolBar">
                         <Title id="commissionConfigTableToolBarTitle" text="{i18n>CommissionConfiguration}"></Title>
+                        <ToolbarSpacer id="_IDGenCommissionConfigToolbarSpacer"/>
+                        <SearchField id="_IDGenCommissionConfigSearchField" width="50%" search=".onFilterConfig"></SearchField>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -15,6 +17,12 @@
                     </Column>
                     <Column id="_IDGenColumn1">
                         <Text id="_IDGenText1" text="{i18n>Year}" />
+                    </Column>
+                    <Column id="_IDGenColumn7">
+                        <Text id="_IDGenText7" text="{i18n>ConfigTitle}" />
+                    </Column>
+                    <Column id="_IDGenColumn8">
+                        <Text id="_IDGenText8" text="{i18n>Status}" />
                     </Column>
                     <Column id="_IDGenColumn2">
                         <Text id="_IDGenText2" text="{i18n>CommissionPercentage}" />
@@ -37,11 +45,13 @@
                         <cells>
                             <Text text="{commissionConfig>ID}" />
                             <Text text="{path: 'commissionConfig>year', type: 'sap.ui.model.type.String'}" />
+                            <Text text="{commissionConfig>title}" />
+                            <Text text="{commissionConfig>status/descr}" />
                             <Text text="{commissionConfig>commissionPercent}" />
                             <Text text="{commissionConfig>createdBy}" />
-                            <Text text="{commissionConfig>createdAt}" />
+                            <Text text="{path:'commissionConfig>createdAt', formatter:'.formatDate' }" />
                             <Text text="{commissionConfig>modifiedBy}" />
-                            <Text text="{commissionConfig>modifiedAt}" />
+                            <Text text="{path:'commissionConfig>modifiedAt', formatter:'.formatDate' }" />
                         </cells>
                     </ColumnListItem>
                 </items>
