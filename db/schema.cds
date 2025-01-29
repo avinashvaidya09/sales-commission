@@ -78,6 +78,7 @@ entity CommissionConfigStatus : CodeList {
   key code : String enum {
         pending  = 'PEND';
         approved = 'APPR';
+        rejected = 'REJC';
       };
 }
 
