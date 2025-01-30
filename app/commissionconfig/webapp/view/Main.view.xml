@@ -3,10 +3,11 @@
     xmlns="sap.m">
     <Page id="_IDGenMainPage">
         <Panel id="_IDGenPanel" class="sapUiResponsiveMargin" width="auto">
-            <Table id="commissionConfigTable" items="{
-                                                       path:'commissionConfig>/',
-                                                       sorter: { path: 'year', descending: true, vSorterInfo:{ descending: true}}
-                                                       }" 
+            <Table id="commissionConfigTable" 
+                items="{
+                        path:'commissionConfig>/',
+                        sorter: { path: 'year', descending: true, vSorterInfo:{ descending: true}}
+                        }" 
                 growing="true" growingScrollToLoad="true" growingThreshold="10"
                 sticky="ColumnHeaders" >
                 <headerToolbar>
@@ -14,7 +15,7 @@
                         <Title id="commissionConfigTableToolBarTitle" text="{i18n>CommissionConfiguration}"></Title>
                         <ToolbarSpacer id="_IDGenCommissionConfigToolbarSpacer"/>
                         <SearchField id="_IDGenCommissionConfigSearchField" width="50%" search=".onFilterConfig"></SearchField>
-                        <Button id="create" text="Create" class="sapUiSmallMarginEnd"></Button>
+                        <Button id="create" text="Create" class="sapUiSmallMarginEnd" press=".onCreate"></Button>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>

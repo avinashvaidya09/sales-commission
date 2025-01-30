@@ -96,12 +96,23 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "name": "RouteManage",
+          "pattern": "manage",
+          "target": [
+            "TargetManage"
+          ]
         }
       ],
       "targets": {
         "TargetMain": {
           "id": "Main",
           "name": "Main"
+        },
+        "TargetManage": {
+          "id": "ManageConfig",
+          "name": "ManageConfig"
         }
       }
     },

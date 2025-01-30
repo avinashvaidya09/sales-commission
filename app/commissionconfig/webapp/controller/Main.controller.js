@@ -12,7 +12,15 @@ sap.ui.define([
          * In case you want to edit data or add parameters, onInit method is the
          * right place to add custom logic.
          */
-        onInit: function () {
+        onInit: function () {            
+            // This is for initial data load.
+            this._fetchCommissionData();
+
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteMain").attachPatternMatched(this._onPatternMatched, this);
+            
+        },
+        _fetchCommissionData: function() {
             const oModel = this.getOwnerComponent().getModel();
             const oView = this.getView();
             const oParameters = {
@@ -26,6 +34,12 @@ sap.ui.define([
             }).catch((oError) => {
                 console.error("Error loading CommissionConfig data:", oError);
             });
+        },
+        /**
+         * Called every time the Main page is loaded (navigated to).
+         */
+        _onPatternMatched: function() {
+            this._fetchCommissionData();
         },
         formatDate: function (sDateTime) {
             if (!sDateTime) {
@@ -47,6 +61,10 @@ sap.ui.define([
             const oList = this.byId("commissionConfigTable");
             const oBinding = oList.getBinding("items");
             oBinding.filter(aFilter);
+        },
+        onCreate: function () {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("RouteManage");
         }
 
     });

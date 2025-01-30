@@ -1,0 +1,32 @@
+<mvc:View xmlns:form="sap.ui.layout.form" controllerName="ns.commissionconfig.controller.ManageConfig"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Page id="createPage">
+        <Panel id="_IDGenPanel1" class="sapUiResponsiveMargin" width="auto" title="{i18n>CreateSalesConfig}" >
+        <content>
+            <form:SimpleForm id="createForm" editable="true">
+                <Label id="_IDGenLabel1" text="Year" required="true"/>
+                <Input id="yearInput" value="{year}" />
+
+                <Label id="_IDGenLabel2" text="Title" required="true"/>
+                <Input id="titleInput" value="{title}" />
+
+                <Label id="_IDGenLabel3" text="Commission Percentage" required="true"/>
+                <Input id="commissionPercentInput" value="{commissionPercent}" type="Number" />
+
+                <Label id="_IDGenLabel4" text="Status" />
+                <Select id="statusSelect" selectedKey="{status_code}">
+                    <items>
+                        <core:Item id="_IDGenItem" key="PEND" text="Pending" />
+                        <core:Item id="_IDGenItem1" key="APPR" text="Approved" />
+                    </items>
+                </Select>
+
+                <Button id="saveButton" text="Save" press=".onSave" />
+            </form:SimpleForm>
+        </content>
+        </Panel>
+    </Page>
+</mvc:View>
