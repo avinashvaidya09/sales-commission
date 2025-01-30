@@ -48,7 +48,7 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem id="_IDGenColumnListItem">
+                    <ColumnListItem id="_IDGenColumnListItem" type="Navigation" press=".onEditCommissionConfig">
                         <cells>
                             <Text text="{commissionConfig>ID}" />
                             <Text text="{path: 'commissionConfig>year', type: 'sap.ui.model.type.String'}" />

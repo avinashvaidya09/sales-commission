@@ -65,6 +65,17 @@ sap.ui.define([
         onCreate: function () {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteManage");
+        },
+        onEditCommissionConfig: function (oEvent) {
+            const oRouter = this.getOwnerComponent().getRouter();
+            const oSelectedObject = oEvent.getSource().getBindingContext("commissionConfig").getObject();
+
+            if (oSelectedObject && oSelectedObject.ID) {
+                // Navigate to Edit Page with configId
+                oRouter.navTo("RouteManage", { configId: oSelectedObject.ID });
+            } else {
+                console.error("Error: No valid ID found for navigation.");
+            }
         }
 
     });

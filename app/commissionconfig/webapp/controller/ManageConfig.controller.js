@@ -7,7 +7,36 @@ sap.ui.define([
 
     return Controller.extend("ns.commissionconfig.controller.ManageConfig", {
         onInit() {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteManage").attachPatternMatched(this._onObjectMatched, this);
+
             this._fetchCommissionConfigStatus();
+        },
+        _onObjectMatched: function (oEvent) {
+            const oModel = this.getOwnerComponent().getModel();
+            const oView = this.getView();
+            
+            // Get `configId` from route parameters
+            this.sConfigId = oEvent.getParameter("arguments").configId;
+
+            if (this.sConfigId && this.sConfigId !== "null") {
+                // EDIT Mode: Load Existing Data
+                oModel.bindContext(`/CommissionConfig('${this.sConfigId}')`).requestObject()
+                    .then((oData) => {
+                        oView.setModel(new JSONModel(oData), "editModel");
+                    })
+                    .catch((oError) => {
+                        console.error("Error loading CommissionConfig:", oError);
+                    });
+            } else {
+                // CREATE Mode: Set Empty Model
+                oView.setModel(new JSONModel({
+                    title: "",
+                    year: "",
+                    commissionPercent: "",
+                    status_code: "PEND"
+                }), "editModel");
+            }
         },
         _fetchCommissionConfigStatus: function() {
             const oModel = this.getOwnerComponent().getModel();

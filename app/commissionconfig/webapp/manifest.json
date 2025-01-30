@@ -99,7 +99,7 @@
         },
         {
           "name": "RouteManage",
-          "pattern": "manage",
+          "pattern": "manage/:configId:",
           "target": [
             "TargetManage"
           ]

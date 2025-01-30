@@ -19,10 +19,10 @@
                     <layout:content>
                         <layout:VerticalLayout id="_IDGenVerticalLayout" width="100%">
                             <Label id="_IDGenLabel2" text="{i18n>CreateConfigTitle}" required="true"/>
-                            <Input id="titleInput" value="{title}"/>
+                            <Input id="titleInput" value="{editModel>/title}"/>
 
                             <Label id="_IDGenLabel1" text="{i18n>CreateConfigYear}" required="true"/>
-                            <Input id="yearInput" value="{year}" type="Number" liveChange=".onYearChange" />
+                            <Input id="yearInput" value="{editModel>/year}" type="Number" liveChange=".onYearChange" />
                             
                         </layout:VerticalLayout>
                     </layout:content>
@@ -32,10 +32,10 @@
                         <layout:VerticalLayout id="_IDGenVerticalLayout1" width="100%">
                            
                             <Label id="_IDGenLabel3" text="{i18n>CreateConfigCommissionPercentage}" required="true"/>
-                            <Input id="commissionPercentInput" value="{commissionPercent}" type="Number" />
+                            <Input id="commissionPercentInput" value="{editModel>/commissionPercent}" type="Number" />
 
                             <Label id="_IDGenLabel4" text="{i18n>CreateConfigStatus}" />
-                            <Select id="statusSelect" selectedKey="{status_code}"  items="{statusModel>/Statuses}" width="100%">
+                            <Select id="statusSelect" selectedKey="{editModel>/status_code}"  items="{statusModel>/Statuses}" width="100%">
                                 <items>
                                     <core:Item key="{statusModel>code}" text="{statusModel>descr}" />
                                 </items>
