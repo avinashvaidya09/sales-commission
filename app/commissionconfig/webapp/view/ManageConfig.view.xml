@@ -4,6 +4,9 @@
     xmlns:layout="sap.ui.layout"
     xmlns:core="sap.ui.core">
     <Page id="createPage">
+        <headerContent>
+            <Title id="ManagePageTitle" text="{i18n>title}" class="customPageTitle"></Title>
+        </headerContent>
         <Panel id="_IDGenPanel1" class="sapUiResponsiveMargin" width="auto" >
         <headerToolbar>
             <OverflowToolbar id="_IDGenCreateConfigOverflowToolbar">

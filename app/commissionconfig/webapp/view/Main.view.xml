@@ -1,7 +1,10 @@
 <mvc:View controllerName="ns.commissionconfig.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="_IDGenMainPage">
+    <Page id="_IDGenMainPage"> 
+        <headerContent>
+            <Title id="mainPageTitle" text="{i18n>title}" class="customPageTitle"></Title>
+        </headerContent>
         <Panel id="_IDGenPanel" class="sapUiResponsiveMargin" width="auto">
             <Table id="commissionConfigTable" 
                 items="{
