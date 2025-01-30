@@ -68,11 +68,12 @@ sap.ui.define([
         onYearChange: function (oEvent) {
             const oInput = oEvent.getSource();
             const sValue = oInput.getValue();
+            const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             
             // Allow only numbers & ensure it's exactly 4 digits
             if (!/^\d{4}$/.test(sValue)) {
                 oInput.setValueState("Error");
-                oInput.setValueStateText("Year must be a 4-digit number");
+                oInput.setValueStateText(oResourceBundle.getText("message.year.invalid"));
             } else {
                 oInput.setValueState("None"); // Remove error state if valid
             }
