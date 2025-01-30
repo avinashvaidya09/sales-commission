@@ -410,6 +410,15 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 7. Start adding custom code, new views and/or controllers and custom style.
 
+8. Let's add this free style application to workzone.
+
+8. **In this free style UI5 application I have added**
+  - Table to list all the commission configuration
+  - Create functionality to create new commission config
+  - Edit functionality to edit existing commission config.
+  - Added searching, sorting and UI validations.
+
+
 ## Learn More 
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
