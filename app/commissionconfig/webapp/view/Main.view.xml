@@ -15,7 +15,7 @@
                         <Title id="commissionConfigTableToolBarTitle" text="{i18n>CommissionConfiguration}"></Title>
                         <ToolbarSpacer id="_IDGenCommissionConfigToolbarSpacer"/>
                         <SearchField id="_IDGenCommissionConfigSearchField" width="50%" search=".onFilterConfig"></SearchField>
-                        <Button id="create" text="Create" class="sapUiSmallMarginEnd" press=".onCreate"></Button>
+                        <Button id="create" text="{i18n>CreateCommisionConfigButton}" type="Emphasized" class="sapUiSmallMarginEnd" press=".onCreate"></Button>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>

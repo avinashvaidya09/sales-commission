@@ -4,28 +4,54 @@
     xmlns:layout="sap.ui.layout"
     xmlns:core="sap.ui.core">
     <Page id="createPage">
-        <Panel id="_IDGenPanel1" class="sapUiResponsiveMargin" width="auto" title="{i18n>CreateSalesConfig}" >
+        <Panel id="_IDGenPanel1" class="sapUiResponsiveMargin" width="auto" >
+        <headerToolbar>
+            <OverflowToolbar id="_IDGenCreateConfigOverflowToolbar">
+                <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+                <Title id="commissionConfigCreateToolBarTitle" text="{i18n>CreateCommissionConfiguration}"></Title>
+                <ToolbarSpacer id="_IDGenToolbarSpacer2"/>
+            </OverflowToolbar>
+        </headerToolbar>
         <content>
-            <form:SimpleForm id="createForm" editable="true">
-                <Label id="_IDGenLabel1" text="Year" required="true"/>
-                <Input id="yearInput" value="{year}" />
+            <layout:Grid id="_IDGenGrid" defaultSpan="XL6 L6 M6 S12" vSpacing="1" hSpacing="1" width="100%">
+                    
+                    <!-- First Column -->
+                    <layout:content>
+                        <layout:VerticalLayout id="_IDGenVerticalLayout" width="100%">
+                            <Label id="_IDGenLabel2" text="{i18n>CreateConfigTitle}" required="true"/>
+                            <Input id="titleInput" value="{title}"/>
 
-                <Label id="_IDGenLabel2" text="Title" required="true"/>
-                <Input id="titleInput" value="{title}" />
+                            <Label id="_IDGenLabel1" text="{i18n>CreateConfigYear}" required="true"/>
+                            <Input id="yearInput" value="{year}" type="Number" liveChange=".onYearChange" />
+                            
+                        </layout:VerticalLayout>
+                    </layout:content>
 
-                <Label id="_IDGenLabel3" text="Commission Percentage" required="true"/>
-                <Input id="commissionPercentInput" value="{commissionPercent}" type="Number" />
+                    <!-- Second Column -->
+                    <layout:content>
+                        <layout:VerticalLayout id="_IDGenVerticalLayout1" width="100%">
+                           
+                            <Label id="_IDGenLabel3" text="{i18n>CreateConfigCommissionPercentage}" required="true"/>
+                            <Input id="commissionPercentInput" value="{commissionPercent}" type="Number" />
 
-                <Label id="_IDGenLabel4" text="Status" />
-                <Select id="statusSelect" selectedKey="{status_code}">
-                    <items>
-                        <core:Item id="_IDGenItem" key="PEND" text="Pending" />
-                        <core:Item id="_IDGenItem1" key="APPR" text="Approved" />
-                    </items>
-                </Select>
+                            <Label id="_IDGenLabel4" text="{i18n>CreateConfigStatus}" />
+                            <Select id="statusSelect" selectedKey="{status_code}"  items="{statusModel>/Statuses}" width="100%">
+                                <items>
+                                    <core:Item key="{statusModel>code}" text="{statusModel>descr}" />
+                                </items>
+                            </Select>
 
-                <Button id="saveButton" text="Save" press=".onSave" />
-            </form:SimpleForm>
+                           
+                        </layout:VerticalLayout>
+                    </layout:content>
+
+                </layout:Grid>
+                <!-- Centered Button Toolbar -->
+                <Toolbar id="buttonToolbar" design="Transparent">
+                    <ToolbarSpacer id="_IDGenToolbarSpacer"/> <!-- Push buttons to the center -->
+                    <Button id="saveButton" text="{i18n>SaveCommissionConfigButton}" type="Emphasized" press=".onSave" width="auto" />
+                    <Button id="backButton" text="{i18n>BackCommissionConfigButton}" type="Emphasized" press=".onBack" width="auto" />
+                </Toolbar>
         </content>
         </Panel>
     </Page>
