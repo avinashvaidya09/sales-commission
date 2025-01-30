@@ -8,7 +8,7 @@
         <headerToolbar>
             <OverflowToolbar id="_IDGenCreateConfigOverflowToolbar">
                 <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-                <Title id="commissionConfigCreateToolBarTitle" text="{i18n>CreateCommissionConfiguration}"></Title>
+                <Title id="commissionConfigCreateToolBarTitle" text="{viewModel>/title}"></Title>
                 <ToolbarSpacer id="_IDGenToolbarSpacer2"/>
             </OverflowToolbar>
         </headerToolbar>
