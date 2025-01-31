@@ -39,7 +39,7 @@ class ManagerService extends cds.ApplicationService {
      */
     async checkApprovalPermissions(request) {
         const data = request.data;
-        if(!request.user.is("finance_manager") && (data.status_code == "APPR" || data.status_code == "REJC")) {
+        if(!request.user.is("finance_manager") && ManagerService.COMMISSION_CONFIG_CLOSED_STATUS_CODES.includes(data.status_code)) {
             return request.reject(403, "Only Finance managers can approve or reject commission config. Please contact your Finance Team.");
         }
     }

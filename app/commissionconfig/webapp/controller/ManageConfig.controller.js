@@ -2,7 +2,10 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
-], (Controller, MessageToast, JSONModel) => {
+    "sap/m/Dialog", 
+    "sap/m/Button",
+    "sap/m/Text"
+], (Controller, MessageToast, JSONModel, Dialog, Button, Text) => {
     "use strict";
 
     return Controller.extend("ns.commissionconfig.controller.ManageConfig", {
@@ -137,9 +140,22 @@ sap.ui.define([
                     
                     // Submit batch. In OData V4 for updates, use batch update
                     oModel.submitBatch("commissionUpdateBatch")
-                        .then((oEvent) => {
-                            console.log(oEvent)
-                            resolve()})
+                            .then(() => {
+                                // Wait for UI5 to process messages asynchronously
+                                return new Promise((resolve) => setTimeout(resolve, 100));
+                            })
+                            .then(() => {
+                            // Retrieve messages from Message Manager
+                            const oMessageManager = sap.ui.getCore().getMessageManager();
+                            const aMessages = oMessageManager.getMessageModel().getData();
+                            const aErrorMessages = aMessages.filter(msg => msg.type === "Error");
+                            aMessages.forEach(msg => oMessageManager.removeMessages(msg));
+                            if (aErrorMessages.length > 0) {
+                                return reject(new Error(aErrorMessages.map(msg => msg.message).join("\n")));
+                            } else {
+                                resolve()
+                            }  
+                        })
                         .catch((oError) => reject(oError));
 
                 }).catch((oError) => {
@@ -179,8 +195,9 @@ sap.ui.define([
                 if (oError && oError.message) {
                     sErrorMessage = oError.message;
                 }
-               
                 console.error("Save failed:", oError);
+                this._showErrorDialog(sErrorMessage);
+               
             }
         },
         onBack: function () {
