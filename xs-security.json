@@ -7,6 +7,10 @@
     {
       "name": "$XSAPPNAME.sales_manager",
       "description": "sales_manager"
+    },
+    {
+      "name": "$XSAPPNAME.finance_manager",
+      "description": "finance_manager"
     }
   ],
   "attributes": [],
@@ -24,6 +28,14 @@
       "description": "generated",
       "scope-references": [
         "$XSAPPNAME.sales_manager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "finance_manager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.finance_manager"
       ],
       "attribute-references": []
     }

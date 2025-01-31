@@ -174,7 +174,7 @@ sap.ui.define([
                 if (oError && oError.message) {
                     sErrorMessage = oError.message;
                 }
-                MessageToast.show(sErrorMessage);
+    
                 console.error("Save failed:", oError);
             }
         },

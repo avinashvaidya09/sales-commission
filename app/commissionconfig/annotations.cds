@@ -1,1 +1,1 @@
-using ManagerService as service from '../../srv/services';
+using ManagerService as service from '../../srv/manager-service';

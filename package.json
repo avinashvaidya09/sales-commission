@@ -49,6 +49,13 @@
                 "sales_manager",
                 "sales_representative"
               ]
+            },
+            "finance-manager@carfox.com": {
+              "password": "admin",
+              "roles": [
+                "sales_manager",
+                "finance_manager"
+              ]
             }
           }
         }

@@ -72,7 +72,7 @@ class ProcessorService extends cds.ApplicationService {
      */
     async calculateSalesCommission(request) {
         const data = request.data;
-        if(request.user.is("sales_representative") && data.status_code == "APR") {
+        if(!request.user.is("sales_manager") && data.status_code == "APR") {
             return request.reject(403, "Only sales managers can approve sales. Please contact your Sales Manager");
         }
         if (data.status_code == "APR" && data.totalSalePrice != null) {
