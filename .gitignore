@@ -34,6 +34,7 @@ mta_archives/
 @cds-models
 
 app/sales/dist/*
+app/commissionconfig/dist/*
 resources/
 
 # auto generated wildcard

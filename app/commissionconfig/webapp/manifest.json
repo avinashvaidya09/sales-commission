@@ -24,6 +24,21 @@
           "odataVersion": "4.0"
         }
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "sales-display": {
+          "semanticObject": "commissionconfig",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "icon": "sap-icon://money-bills",
+          "info":"{{flpInfo}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
   },
   "sap.ui": {
@@ -122,5 +137,9 @@
       "type": "XML",
       "id": "App"
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "salescommission.service"
   }
 }

@@ -25,7 +25,8 @@
     "watch-commissionconfig": "cds watch --open commissionconfig/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
-    "app/sales"
+    "app/sales",
+    "app/commissionconfig"
   ],
   "cds": {
     "requires": {

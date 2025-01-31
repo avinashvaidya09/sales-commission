@@ -330,21 +330,6 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 6. To integrate your application with SAP Build Work Zone, follow the steps mentioned in the [tutorial](https://developers.sap.com/tutorials/integrate-with-work-zone.html)
 
-# Troubleshooting tips
-
-1. If you have error loading your application after deployment on BTP please compare the below files properly.
- - [mta.yaml](mta.yaml)
- - [package.json](package.json)
- - [xs-security.json](xs-security.json)
- - [xs-app.json](app/sales/xs-app.json)
- - [ui5.yaml](app/sales/ui5.yaml)
- - [ui5-deploy.yaml](app/sales/ui5-deploy.yaml)
- - [manifest.json](app/sales/webapp/manifest.json)
-
-2. Ensure you have the role collection created and assigned to your user BTP.
-
-3. Also, ensure you open the workzone site in an incognito mode or different browser. The reason is, we tend to do development on same browser and then open the site also in same browser. At times, the cache causes problem with authentication and app router is not able to reach the OData service.
-
 ### You have successfully created a full stack application and enabled it on Build Workzone on BTP.
 
 # Let's add freestyle UI5 app to the existing project.
@@ -411,13 +396,69 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 7. Start adding custom code, new views and/or controllers and custom style.
 
 8. Let's add this free style application to workzone.
+  ```
+    cds add workzone-standard
+  ```
 
-8. **In this free style UI5 application I have added**
+9. Go through the below files, validate the changes and understand them [NOTE: Remove if there are any web ide related dependencies added. We do not need it as we are developing in BAS]
+  - [app/commissionconfig/package.json](app/commissionconfig/package.json)
+  - [app/commissionconfig/ui5-deploy.yaml](app/commissionconfig/ui5-deploy.yaml)
+  - [app/commissionconfig/webapp/manifest.json](app/commissionconfig/webapp/manifest.json). Below section has to be edited based on your application
+  ```
+  "crossNavigation": {
+      "inbounds": {
+        "sales-display": {
+          "semanticObject": "commissionconfig",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "icon": "sap-icon://money-bills",
+          "info":"{{flpInfo}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+  ```
+  Remember to add title and subtitle in [app/sales/webapp/i18n/i18n.properties](app/sales/webapp/i18n/i18n.properties)\
+
+10. Run build
+  ```
+  mbt build
+  ```
+
+11. Remember now, 2 zip files should be created inside the resource folder if the build is success.
+  - sales.zip
+  - commissionconfig.zip
+
+
+12. Deploy application to your cloud foundry environment
+  ```
+  cf deploy mta_archives/sales-commission_1.0.0.mtar
+  ```
+
+13. **You have successfully created a free style UI5 application and learnt below**
   - Table to list all the commission configuration
   - Create functionality to create new commission config
   - Edit functionality to edit existing commission config.
   - Added searching, sorting and UI validations.
+  - Adding custom styling
+  - Integrate with local CAP OData API
 
+# Troubleshooting tips
+
+1. If you have error loading your application after deployment on BTP please compare the below files properly.
+ - [mta.yaml](mta.yaml)
+ - [package.json](package.json)
+ - [xs-security.json](xs-security.json)
+ - [xs-app.json](app/sales/xs-app.json)
+ - [ui5.yaml](app/sales/ui5.yaml)
+ - [ui5-deploy.yaml](app/sales/ui5-deploy.yaml)
+ - [manifest.json](app/sales/webapp/manifest.json)
+
+2. Ensure you have the role collection created and assigned to your user BTP.
+
+3. Also, ensure you open the workzone site in an incognito mode or different browser. The reason is, we tend to do development on same browser and then open the site also in same browser. At times, the cache causes problem with authentication and app router is not able to reach the OData service.
 
 ## Learn More 
 
