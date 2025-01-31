@@ -53,6 +53,10 @@ modules:
           artifacts:
             - sales.zip
           target-path: resources/
+        - name: salescommissionconfig
+          artifacts:
+            - commissionconfig.zip
+          target-path: resources/
 
   - name: salescommissionsales
     type: html5
@@ -97,6 +101,18 @@ modules:
               ServiceInstanceName: sales-commission-auth
               ServiceKeyName: sales-commission-auth-key
               sap.cloud.service: salescommission.service
+
+  - name: salescommissionconfig
+    type: html5
+    path: app/commissionconfig
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
 
 resources:
   - name: sales-commission-destination
@@ -148,4 +164,3 @@ resources:
       config:
         xsappname: sales-commission-${space}
         tenant-mode: dedicated
-

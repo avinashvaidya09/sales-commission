@@ -74,9 +74,20 @@ entity Status : CodeList {
       criticality : Integer;
 }
 
-entity CommissionConfig : cuid, managed {
-  commissionPercent : Decimal(15, 2);
-  year              : Integer;
+entity CommissionConfigStatus : CodeList {
+  key code : String enum {
+        pending  = 'PEND';
+        approved = 'APPR';
+        rejected = 'REJC';
+      };
+}
+
+entity CommissionConfig : managed {
+  key ID                : UUID @Core.Computed;
+      status            : Association to CommissionConfigStatus default 'PEND';
+      title             : String;
+      commissionPercent : Decimal(15, 2);
+      year              : Integer;
 }
 
 type EMailAddress : String;

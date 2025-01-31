@@ -21,14 +21,19 @@
     "start": "cds-serve",
     "watch-sales": "cds watch --open sales/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy sales-commission --delete-services --delete-service-keys --delete-service-brokers",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-commissionconfig": "cds watch --open commissionconfig/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
-    "app/sales"
+    "app/sales",
+    "app/commissionconfig"
   ],
   "cds": {
     "requires": {
       "[development]": {
+        "db": {
+          "kind": "sqlite"
+        },
         "auth": {
           "kind": "mocked",
           "users": {
@@ -41,7 +46,8 @@
             "sales-manager@carfox.com": {
               "password": "admin",
               "roles": [
-                "sales_manager"
+                "sales_manager",
+                "sales_representative"
               ]
             }
           }

@@ -1,0 +1,7 @@
+<mvc:View controllerName="ns.commissionconfig.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Shell id="_IDGenAppShell">
+        <App id="app"/>
+    </Shell>
+</mvc:View>

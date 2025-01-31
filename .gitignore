@@ -1,7 +1,7 @@
 # CAP sales-commission
 _out
 *.db
-*.sqlite
+*.sqlite*
 connection.properties
 default-*.json
 .cdsrc-private.json
@@ -34,4 +34,8 @@ mta_archives/
 @cds-models
 
 app/sales/dist/*
+app/commissionconfig/dist/*
 resources/
+
+# auto generated wildcard
+db/.env

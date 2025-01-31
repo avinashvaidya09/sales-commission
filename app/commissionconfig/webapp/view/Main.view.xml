@@ -1,0 +1,71 @@
+<mvc:View controllerName="ns.commissionconfig.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="_IDGenMainPage"> 
+        <headerContent>
+            <Title id="mainPageTitle" text="{i18n>title}" class="customPageTitle"></Title>
+        </headerContent>
+        <Panel id="_IDGenPanel" class="sapUiResponsiveMargin" width="auto">
+            <Table id="commissionConfigTable" 
+                items="{
+                        path:'commissionConfig>/',
+                        sorter: { path: 'year', descending: true, vSorterInfo:{ descending: true}}
+                        }" 
+                growing="true" growingScrollToLoad="true" growingThreshold="10"
+                sticky="ColumnHeaders" >
+                <headerToolbar>
+                    <OverflowToolbar id="commissionConfigTableToolBar">
+                        <Title id="commissionConfigTableToolBarTitle" text="{i18n>CommissionConfiguration}"></Title>
+                        <ToolbarSpacer id="_IDGenCommissionConfigToolbarSpacer"/>
+                        <SearchField id="_IDGenCommissionConfigSearchField" width="50%" search=".onFilterConfig"></SearchField>
+                        <Button id="create" text="{i18n>CreateCommisionConfigButton}" type="Emphasized" class="sapUiSmallMarginEnd" press=".onCreate"></Button>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="_IDGenColumn" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText" text="{i18n>ID}" />
+                    </Column>
+                    <Column id="_IDGenColumn1" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText1" text="{i18n>Year}" />
+                    </Column>
+                    <Column id="_IDGenColumn7" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText7" text="{i18n>ConfigTitle}" />
+                    </Column>
+                    <Column id="_IDGenColumn8" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText8" text="{i18n>Status}" />
+                    </Column>
+                    <Column id="_IDGenColumn2" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText2" text="{i18n>CommissionPercentage}" />
+                    </Column>
+                    <Column id="_IDGenColumn3" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText3" text="{i18n>CreatedBy}" />
+                    </Column>
+                    <Column id="_IDGenColumn4" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText4" text="{i18n>CreatedAt}" />
+                    </Column>
+                    <Column id="_IDGenColumn5" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText5" text="{i18n>ModifiedBy}" />
+                    </Column>
+                    <Column id="_IDGenColumn6" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="_IDGenText6" text="{i18n>ModifiedAt}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="_IDGenColumnListItem" type="Navigation" press=".onEditCommissionConfig">
+                        <cells>
+                            <Text text="{commissionConfig>ID}" />
+                            <Text text="{path: 'commissionConfig>year', type: 'sap.ui.model.type.String'}" />
+                            <Text text="{commissionConfig>title}" />
+                            <Text text="{commissionConfig>status/descr}" />
+                            <Text text="{commissionConfig>commissionPercent}" />
+                            <Text text="{commissionConfig>createdBy}" />
+                            <Text text="{path:'commissionConfig>createdAt', formatter:'.formatDate' }" />
+                            <Text text="{commissionConfig>modifiedBy}" />
+                            <Text text="{path:'commissionConfig>modifiedAt', formatter:'.formatDate' }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </Panel>
+    </Page>
+</mvc:View>

@@ -1,0 +1,8 @@
+/* Enter your custom styles here */
+.customPageTitle {
+    color: #0064d9 !important; /* Changes font color to SAP Blue */
+    font-weight: bold; /* Makes it bold */
+    font-size: 1.2rem; /* Increases font size */
+    display: block;
+    padding-right: 85%;
+}
