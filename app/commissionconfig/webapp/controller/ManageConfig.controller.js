@@ -137,7 +137,9 @@ sap.ui.define([
                     
                     // Submit batch. In OData V4 for updates, use batch update
                     oModel.submitBatch("commissionUpdateBatch")
-                        .then(() => resolve())
+                        .then((oEvent) => {
+                            console.log(oEvent)
+                            resolve()})
                         .catch((oError) => reject(oError));
 
                 }).catch((oError) => {
@@ -168,13 +170,16 @@ sap.ui.define([
                     await this._createCommissionConfig(oModel, oData);
                     MessageToast.show(oResourceBundle.getText("message.success.CommissionConfigCreated"));
                 }
-                oRouter.navTo("RouteMain"); // Navigate back after save    
+                // Add a slight delay before navigating
+                setTimeout(() => {
+                    oRouter.navTo("RouteMain");
+                }, 500);
             } catch (oError) {
                 let sErrorMessage = oResourceBundle.getText("message.error.CommissionConfigFailed");
                 if (oError && oError.message) {
                     sErrorMessage = oError.message;
                 }
-    
+               
                 console.error("Save failed:", oError);
             }
         },
@@ -194,6 +199,25 @@ sap.ui.define([
             } else {
                 oInput.setValueState("None"); // Remove error state if valid
             }
+        },
+        _showErrorDialog: function (sMessage) {
+            const oDialog = new Dialog({
+                title: "Error",
+                type: "Message",
+                state: "Error",
+                content: new Text({ text: sMessage }),
+                beginButton: new Button({
+                    text: "OK",
+                    press: function () {
+                        oDialog.close();
+                    }
+                }),
+                afterClose: function () {
+                    oDialog.destroy();
+                }
+            });
+
+            oDialog.open();
         }
     });
 });
