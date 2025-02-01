@@ -2,7 +2,10 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
-], (Controller, MessageToast, JSONModel) => {
+    "sap/m/Dialog", 
+    "sap/m/Button",
+    "sap/m/Text"
+], (Controller, MessageToast, JSONModel, Dialog, Button, Text) => {
     "use strict";
 
     return Controller.extend("ns.commissionconfig.controller.ManageConfig", {
@@ -137,7 +140,22 @@ sap.ui.define([
                     
                     // Submit batch. In OData V4 for updates, use batch update
                     oModel.submitBatch("commissionUpdateBatch")
-                        .then(() => resolve())
+                            .then(() => {
+                                // Wait for UI5 to process messages asynchronously
+                                return new Promise((resolve) => setTimeout(resolve, 100));
+                            })
+                            .then(() => {
+                            // Retrieve messages from Message Manager
+                            const oMessageManager = sap.ui.getCore().getMessageManager();
+                            const aMessages = oMessageManager.getMessageModel().getData();
+                            const aErrorMessages = aMessages.filter(msg => msg.type === "Error");
+                            aMessages.forEach(msg => oMessageManager.removeMessages(msg));
+                            if (aErrorMessages.length > 0) {
+                                return reject(new Error(aErrorMessages.map(msg => msg.message).join("\n")));
+                            } else {
+                                resolve()
+                            }  
+                        })
                         .catch((oError) => reject(oError));
 
                 }).catch((oError) => {
@@ -168,14 +186,18 @@ sap.ui.define([
                     await this._createCommissionConfig(oModel, oData);
                     MessageToast.show(oResourceBundle.getText("message.success.CommissionConfigCreated"));
                 }
-                oRouter.navTo("RouteMain"); // Navigate back after save    
+                // Add a slight delay before navigating
+                setTimeout(() => {
+                    oRouter.navTo("RouteMain");
+                }, 500);
             } catch (oError) {
                 let sErrorMessage = oResourceBundle.getText("message.error.CommissionConfigFailed");
                 if (oError && oError.message) {
                     sErrorMessage = oError.message;
                 }
-                MessageToast.show(sErrorMessage);
                 console.error("Save failed:", oError);
+                this._showErrorDialog(sErrorMessage);
+               
             }
         },
         onBack: function () {
@@ -194,6 +216,25 @@ sap.ui.define([
             } else {
                 oInput.setValueState("None"); // Remove error state if valid
             }
+        },
+        _showErrorDialog: function (sMessage) {
+            const oDialog = new Dialog({
+                title: "Error",
+                type: "Message",
+                state: "Error",
+                content: new Text({ text: sMessage }),
+                beginButton: new Button({
+                    text: "OK",
+                    press: function () {
+                        oDialog.close();
+                    }
+                }),
+                afterClose: function () {
+                    oDialog.destroy();
+                }
+            });
+
+            oDialog.open();
         }
     });
 });
