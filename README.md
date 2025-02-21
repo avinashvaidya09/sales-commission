@@ -13,7 +13,7 @@ Welcome to your new project.
 
 2. This will create a essential structure to start the project.
     ```
-    - order-management-app
+    - sales-commission
         |_ app
         |_ db
         |_ srv
