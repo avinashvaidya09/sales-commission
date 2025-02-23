@@ -53,11 +53,14 @@ entity Customers : managed {
                     on addresses.customer = $self;
 }
 
-entity Addresses : cuid, managed {
+entity Addresses : managed {
+  key ID        : String;
   customer      : Association to Customers;
+  streetAddress : String;
   city          : String;
   postCode      : String;
-  streetAddress : String;
+  country       : String;
+  addressTimeZone: String;
 }
 
 entity Status : CodeList {

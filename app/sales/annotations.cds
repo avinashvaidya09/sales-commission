@@ -58,6 +58,12 @@ annotate service.Sales with @(
         },
         {
             $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>Customerinfo}',
+            ID : 'i18nCustomerinfo',
+            Target : '@UI.FieldGroup#i18nCustomerinfo',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
             Label : '{i18n>ProductDetails}',
             ID : 'i18nProductDetails',
             Target : '@UI.FieldGroup#i18nProductDetails',
@@ -223,6 +229,36 @@ annotate service.Sales with @(
             {
                 $Type : 'UI.DataField',
                 Value : product.currency.code,
+            },
+        ],
+    },
+    UI.FieldGroup #i18nCustomerinfo : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : customer.addresses.streetAddress,
+                Label : '{i18n>Streetaddress}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : customer.addresses.postCode,
+                Label : '{i18n>Postcode}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : customer.addresses.city,
+                Label : '{i18n>City}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : customer.addresses.country,
+                Label : '{i18n>Country1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : customer.addresses.addressTimeZone,
+                Label : '{i18n>Addresstimezone}',
             },
         ],
     },
@@ -399,5 +435,46 @@ annotate service.Sales with {
         $value : customer.ID,
         ![@UI.TextArrangement] : #TextSeparate
     }
+};
+
+annotate service.Addresses with {
+    postCode @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Addresses with {
+    city @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Addresses with {
+    country @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Addresses with {
+    addressTimeZone @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Addresses with {
+    streetAddress @Common.FieldControl : #ReadOnly
+};
+
+annotate service.Addresses with {
+    ID @(
+        Common.Text : {
+        $value : city,
+        ![@UI.TextArrangement] : #TextSeparate
+    },
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Addresses',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : ID,
+                    ValueListProperty : 'ID',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+    )
 };
 

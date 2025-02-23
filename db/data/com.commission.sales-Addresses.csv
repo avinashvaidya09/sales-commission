@@ -1,7 +1,4 @@
-ID,customer_ID,city,postCode,streetAddress,createdAt,createdBy
-11111111-aaaa-bbbb-cccc-111111111111,123456789,"New York","10001","123 Main Street",2025-01-20T11:00:00.000Z,admin
-22222222-aaaa-bbbb-cccc-222222222222,987654321,"Los Angeles","90001","456 Elm Street",2025-01-20T11:05:00.000Z,admin
-33333333-aaaa-bbbb-cccc-333333333333,456789123,"Chicago","60601","789 Michigan Avenue",2025-01-20T11:10:00.000Z,admin
-44444444-aaaa-bbbb-cccc-444444444444,234567891,"Houston","77001","101 Main Street",2025-01-20T11:15:00.000Z,admin
-55555555-aaaa-bbbb-cccc-555555555555,876543219,"Phoenix","85001","202 Desert Road",2025-01-20T11:20:00.000Z,admin
-66666666-aaaa-bbbb-cccc-666666666666,567891234,"Philadelphia","19101","303 Liberty Street",2025-01-20T11:25:00.000Z,admin
+ID,customer_ID,streetAddress,city,postCode,country,addressTimeZone,createdAt,createdBy
+11111111,123456789,"123 Main Street","New York","10001","US","ET",2025-01-20T11:00:00.000Z,admin
+22222222,987654321,"456 Elm Street","Los Angeles","90001","DE","PT",2025-01-20T11:05:00.000Z,admin
+33333333,456789123,"789 Michigan Avenue","Chicago","60601","US","CT",2025-01-20T11:10:00.000Z,admin

@@ -445,6 +445,35 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
   - Adding custom styling
   - Integrate with local CAP OData API
 
+# Let's extend this application by integrating it with backend OData API
+
+## Use Case: 
+
+1. As you know, Customer entity has relation with Addresses. 
+2. You can observer it by exploring the OData URL - https:host/odata/v4/manager/Customers?$expand=addresses 
+3. Let's add a scenario where a customer doesnt have an address in the database.
+4. For such customers we will fetch the address from the backend OData API. (S4HANA OData API)
+5. Now to support this use case, I refactored few things as mentioned below
+  - I added country, addressTimeZone attribute in the Addresses entity.
+    ```
+    entity Addresses : managed {
+    key ID        : String;
+    customer      : Association to Customers;
+    streetAddress : String;
+    city          : String;
+    postCode      : String;
+    country       : String;
+    addressTimeZone: String;
+    }
+    ```
+
+  - I deliberately removed some addresses from the [com.commission.sales-Addresses.csv](db/data/com.commission.sales-Addresses.csv). 
+    Checkout the history of the file to understand the difference.
+
+## Changes to Object Page
+1. Here, let's add a form section for Customer Address.
+
+
 # Troubleshooting tips
 
 1. If you have error loading your application after deployment on BTP please compare the below files properly.
