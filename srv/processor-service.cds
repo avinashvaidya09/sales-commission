@@ -11,6 +11,8 @@ service ProcessorService {
     entity Products         as projection on sales.Products;
     @readonly
     entity Customers        as projection on sales.Customers;
+    @readonly
+    entity Addresses as projection on sales.Addresses;
 
 }
 

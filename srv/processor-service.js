@@ -12,6 +12,7 @@ class ProcessorService extends cds.ApplicationService {
         this.before(["CREATE", "UPDATE"], "Sales", (request) => this.updateProductPriceOnSaleRecord(request));
         this.before("UPDATE", "Sales", (request) => this.updatePricing(request));
         this.before("UPDATE", "Sales", (request) => this.calculateSalesCommission(request));
+        this.after("READ", "Sales", (request) => this.validateAddressOnRead(request));
         return super.init();
     }
 
@@ -87,6 +88,14 @@ class ProcessorService extends cds.ApplicationService {
             const commissionForCurrentSale = (commissionForCurrentYear.commissionPercent / 100) * data.totalSalePrice;
 
             data.commission = commissionForCurrentSale;
+        }
+    }
+
+    async validateAddressOnRead(request) {
+        if(request.length > 1) {
+            return;
+        } else {
+            console.log(request[0])
         }
     }
 }
