@@ -506,17 +506,46 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
       }
     ```
 
-12. While, I was learning this backend odata integration, i thought to add very important documentation link - https://cap.cloud.sap/docs/guides/using-services#feature-overview 
+12. For this tutorial, we will create a destination in the same subaccount as we do not want to store URLS and API key in the code.
 
-13. Start the CAP application with mock remote service locally by running the below command in a terminal     [OPTIONAL]. I tried to connect directly to the backend API.
-  ```
-  cds mock API_BUSINESS_PARTNER
-  ```
+13. Create a destination in the **Destination** service in BTP with below properties
+    ```
+    Name=BP_DESTINATION
+    Type=HTTP
+    Authentication=NoAuthentication
+    ProxyType=Internet
+    URL=<BP OData API URL>
+    URL.headers.APIKey=<Your API Key>
+    ```
+
+14. Update your package.json with **credentials** section as shown below
+    ```
+    "API_BUSINESS_PARTNER": {
+          "kind": "odata-v2",
+          "model": "srv/external/API_BUSINESS_PARTNER",
+          "credentials": {
+            "destination": "BP_DESTINATION",
+            "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
+          }
+      }
+    ```
+
+**NOTE:** While, I was learning this backend odata integration, I thought to add very important documentation link - https://cap.cloud.sap/docs/guides/using-services#feature-overview 
 
 14. Then start the CAP application with the command of your choice
     ```
     npm run watch-sales
     ```
+
+15. For destination service to work properly on the local, you will have to create bindings. Quicker way is to create vcap.json.
+    Go to your deployed application -> Environment Variables -> Get the VCAP_SERVICES section from the JSON.
+    Add this in the vcap.json on your local. If you do not have vcap.json, create one and load it in the env
+    ```
+    export VCAP_SERVICES=$(cat vcap.json)
+    ```
+
+16. CDS will take care of fetching the destination details from destination service. You do not have to write the boiler plate code.
+    The libraries which we added at the start of the section are doing the heavy lifting for you. Enjoy!
 
 15. Add an event handler in [processor-service.js](/srv/processor-service.js) as shown below
     ```
@@ -560,12 +589,18 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
     }
     ```
 
-16. **IMP NOTE**: For this tutorial, I have added API key in the package.json. But in real scenarios, we should rely on storing the
-    URLs and credentials in the destination service for production scenarios. Refer - https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js
+16. Last step, to show it on UI, add a "Customer Address" section in the List Object Page. Refer this section of the tutorial - For quick reference you can refer step 5  of this [Configuring Object Page View](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#9f8b34a1-68f8-41fa-af2a-2cf74428a909)
 
-## Changes to Object Page
-1. Here, let's add a form section for Customer Address.
-
+17. Test the application on your local. Build and deploy the application on BTP.
+    ```
+    mbt build && cf deploy mta_archives/sales-commission_1.0.0.mtar
+    ```
+ 
+18. **You have successfully integrated backend OData API and learnt below:**
+    - Integrated Business Partner OData API
+    - Configured destination and integrated with destination service
+    - Implemented  "after read" event handler
+    - Added a new UI section "Customer Address" in the existing application.
 
 # Troubleshooting tips
 
@@ -586,3 +621,4 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
 
 1. Learn more at https://cap.cloud.sap/docs/get-started/.
 2. https://cap.cloud.sap/docs/guides/using-services#feature-overview
+3. https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js 

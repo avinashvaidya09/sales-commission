@@ -101,12 +101,15 @@ class ProcessorService extends cds.ApplicationService {
      * @returns 
      */
     async enrichCustomerAddress(request) {
-        if(request.length > 1) {
+        if( request && request.length > 1) {
             return;
         } else {
             const customer = request[0].customer;
+            if (!customer) {
+                return;
+            }
             let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
-            if (customerAddress != null) {
+            if (customerAddress) {
                 return;
             }
             try {
