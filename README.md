@@ -470,6 +470,99 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
   - I deliberately removed some addresses from the [com.commission.sales-Addresses.csv](db/data/com.commission.sales-Addresses.csv). 
     Checkout the history of the file to understand the difference.
 
+6. Add additional dependencies to the package.json as mentioned below and run *npm install*
+    ```
+    "@sap-cloud-sdk/connectivity": "^3.26.1",
+    "@sap-cloud-sdk/http-client": "^3.26.1",
+    "@sap-cloud-sdk/resilience": "^3.26.1",
+    "@sap-cloud-sdk/util": "^3.26.1",
+    ```
+  
+7. Download the **Business Partner API** edmx file and import it in the root of the project. You can get the edmx file from **Business Accelerator Hub**. 
+You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the repo as well.
+
+8. Run the following command in the terminal
+  ```
+  cds import API_BUSINESS_PARTNER.edmx --as cds
+  ```
+
+9. You should see logs as below
+  ```
+  [cds] - updated ./package.json
+
+  [cds] - imported API to srv/external/API_BUSINESS_PARTNER
+  > use it in your CDS models through the like of:
+
+  using { API_BUSINESS_PARTNER as external } from './external/API_BUSINESS_PARTNER'
+  ```
+10. If you observe, you will see **external** folder inside **srv** containing cds and edmx files.
+
+11. Also observe the **package.json**, you must see the below added lines added for production. 
+    Copy it and also paste it under development
+    ```
+    "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER"
+      }
+    ```
+
+12. While, I was learning this backend odata integration, i thought to add very important documentation link - https://cap.cloud.sap/docs/guides/using-services#feature-overview 
+
+13. Start the CAP application with mock remote service locally by running the below command in a terminal     [OPTIONAL]. I tried to connect directly to the backend API.
+  ```
+  cds mock API_BUSINESS_PARTNER
+  ```
+
+14. Then start the CAP application with the command of your choice
+    ```
+    npm run watch-sales
+    ```
+
+15. Add an event handler in [processor-service.js](/srv/processor-service.js) as shown below
+    ```
+    /**
+     * This method validates if the address is present for the customer.
+     * If not then fetches it from backend API.
+     * 
+     * @param {*} request 
+     * @returns 
+     */
+    async enrichCustomerAddress(request) {
+        if(request.length > 1) {
+            return;
+        } else {
+            const customer = request[0].customer;
+            let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
+            if (customerAddress != null) {
+                return;
+            }
+            try {
+                const response = await this.bpapi.tx(request).get(
+                    `/A_BusinessPartner('${customer.ID}')/to_BusinessPartnerAddress`
+                );
+                console.log("API Response:", JSON.stringify(response, null, 2));
+                if (response && response.length > 0) {
+                    const apiAddress = response[0];
+                    const backendAddressForCustomer = {
+                        ID: apiAddress.AddressID,
+                        streetAddress: apiAddress.StreetName != "" ? apiAddress.StreetName : "NA",
+                        city: apiAddress.Region != "" ? apiAddress.Region : "NA",
+                        postCode: apiAddress.PostalCode != "" ? apiAddress.PostalCode : "NA",
+                        country: apiAddress.Country != "" ? apiAddress.Country : "NA",
+                        addressTimeZone: apiAddress.AddressTimeZone != "" ? apiAddress.AddressTimeZone : "NA"
+                    }
+                    customer.addresses = [backendAddressForCustomer];
+                }
+            } catch (error) {
+                console.error("Error fetching address:", error.message);
+            }
+        }
+    }
+    ```
+
+16. **IMP NOTE**: For this tutorial, I have added API key in the package.json. But in real scenarios, we should rely on storing the
+    URLs and credentials in the destination service for production scenarios. Refer - https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js
+
 ## Changes to Object Page
 1. Here, let's add a form section for Customer Address.
 
@@ -491,4 +584,5 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 ## Learn More 
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+1. Learn more at https://cap.cloud.sap/docs/get-started/.
+2. https://cap.cloud.sap/docs/guides/using-services#feature-overview

@@ -7,12 +7,14 @@ class ProcessorService extends cds.ApplicationService {
     static SALES_CLOSED_STATUS_CODES = ['CAN', 'REJ', 'APR', 'CLS'];
 
     /* Registering custom event handlers in the init method */
-    init() {
+    async init() {
+        // Connect to API_BUSINESS_PARTNER
+        this.bpapi = await cds.connect.to('API_BUSINESS_PARTNER');
         this.before("UPDATE", "Sales", (request) => this.validateOnUpdate(request));
         this.before(["CREATE", "UPDATE"], "Sales", (request) => this.updateProductPriceOnSaleRecord(request));
         this.before("UPDATE", "Sales", (request) => this.updatePricing(request));
         this.before("UPDATE", "Sales", (request) => this.calculateSalesCommission(request));
-        this.after("READ", "Sales", (request) => this.validateAddressOnRead(request));
+        this.after("READ", "Sales", (request) => this.enrichCustomerAddress(request));
         return super.init();
     }
 
@@ -91,11 +93,42 @@ class ProcessorService extends cds.ApplicationService {
         }
     }
 
-    async validateAddressOnRead(request) {
+    /**
+     * This method validates if the address is present for the customer.
+     * If not then fetches it from backend API.
+     * 
+     * @param {*} request 
+     * @returns 
+     */
+    async enrichCustomerAddress(request) {
         if(request.length > 1) {
             return;
         } else {
-            console.log(request[0])
+            const customer = request[0].customer;
+            let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
+            if (customerAddress != null) {
+                return;
+            }
+            try {
+                const response = await this.bpapi.tx(request).get(
+                    `/A_BusinessPartner('${customer.ID}')/to_BusinessPartnerAddress`
+                );
+                console.log("API Response:", JSON.stringify(response, null, 2));
+                if (response && response.length > 0) {
+                    const apiAddress = response[0];
+                    const backendAddressForCustomer = {
+                        ID: apiAddress.AddressID,
+                        streetAddress: apiAddress.StreetName != "" ? apiAddress.StreetName : "NA",
+                        city: apiAddress.Region != "" ? apiAddress.Region : "NA",
+                        postCode: apiAddress.PostalCode != "" ? apiAddress.PostalCode : "NA",
+                        country: apiAddress.Country != "" ? apiAddress.Country : "NA",
+                        addressTimeZone: apiAddress.AddressTimeZone != "" ? apiAddress.AddressTimeZone : "NA"
+                    }
+                    customer.addresses = [backendAddressForCustomer];
+                }
+            } catch (error) {
+                console.error("Error fetching address:", error.message);
+            }
         }
     }
 }
