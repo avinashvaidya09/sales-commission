@@ -6,10 +6,14 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^8.6.1",
-    "express": "^4",
     "@cap-js/hana": "^1",
-    "@sap/xssec": "^4"
+    "@sap-cloud-sdk/connectivity": "^3.26.1",
+    "@sap-cloud-sdk/http-client": "^3.26.1",
+    "@sap-cloud-sdk/resilience": "^3.26.1",
+    "@sap-cloud-sdk/util": "^3.26.1",
+    "@sap/cds": "^8.6.1",
+    "@sap/xssec": "^4",
+    "express": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.8.0",
@@ -58,7 +62,15 @@
               ]
             }
           }
-        }
+        },
+        "API_BUSINESS_PARTNER": {
+          "kind": "odata-v2",
+          "model": "srv/external/API_BUSINESS_PARTNER",
+          "credentials": {
+            "destination": "BP_DESTINATION",
+            "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
+          }
+      }
       },
       "[production]": {
         "db": "hana",
@@ -66,7 +78,15 @@
       },
       "html5-repo": true,
       "destinations": true,
-      "workzone": true
+      "workzone": true,
+      "API_BUSINESS_PARTNER": {
+          "kind": "odata-v2",
+          "model": "srv/external/API_BUSINESS_PARTNER",
+          "credentials": {
+            "destination": "BP_DESTINATION",
+            "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
+          }
+      }
     },
     "sql": {
       "native_hana_associations": false

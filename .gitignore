@@ -8,6 +8,8 @@ default-*.json
 gen/
 node_modules/
 target/
+.env
+vcap.json
 
 # Web IDE, App Studio
 .che/

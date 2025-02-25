@@ -445,6 +445,163 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
   - Adding custom styling
   - Integrate with local CAP OData API
 
+# Let's extend this application by integrating it with backend OData API
+
+## Use Case: 
+
+1. As you know, Customer entity has relation with Addresses. 
+2. You can observer it by exploring the OData URL - https:host/odata/v4/manager/Customers?$expand=addresses 
+3. Let's add a scenario where a customer doesnt have an address in the database.
+4. For such customers we will fetch the address from the backend OData API. (S4HANA OData API)
+5. Now to support this use case, I refactored few things as mentioned below
+  - I added country, addressTimeZone attribute in the Addresses entity.
+    ```
+    entity Addresses : managed {
+    key ID        : String;
+    customer      : Association to Customers;
+    streetAddress : String;
+    city          : String;
+    postCode      : String;
+    country       : String;
+    addressTimeZone: String;
+    }
+    ```
+
+  - I deliberately removed some addresses from the [com.commission.sales-Addresses.csv](db/data/com.commission.sales-Addresses.csv). 
+    Checkout the history of the file to understand the difference.
+
+6. Add additional dependencies to the package.json as mentioned below and run *npm install*
+    ```
+    "@sap-cloud-sdk/connectivity": "^3.26.1",
+    "@sap-cloud-sdk/http-client": "^3.26.1",
+    "@sap-cloud-sdk/resilience": "^3.26.1",
+    "@sap-cloud-sdk/util": "^3.26.1",
+    ```
+  
+7. Download the **Business Partner API** edmx file and import it in the root of the project. You can get the edmx file from **Business Accelerator Hub**. 
+You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the repo as well.
+
+8. Run the following command in the terminal
+  ```
+  cds import API_BUSINESS_PARTNER.edmx --as cds
+  ```
+
+9. You should see logs as below
+  ```
+  [cds] - updated ./package.json
+
+  [cds] - imported API to srv/external/API_BUSINESS_PARTNER
+  > use it in your CDS models through the like of:
+
+  using { API_BUSINESS_PARTNER as external } from './external/API_BUSINESS_PARTNER'
+  ```
+10. If you observe, you will see **external** folder inside **srv** containing cds and edmx files.
+
+11. Also observe the **package.json**, you must see the below added lines added for production. 
+    Copy it and also paste it under development
+    ```
+    "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER"
+      }
+    ```
+
+12. For this tutorial, we will create a destination in the same subaccount as we do not want to store URLS and API key in the code.
+
+13. Create a destination in the **Destination** service in BTP with below properties
+    ```
+    Name=BP_DESTINATION
+    Type=HTTP
+    Authentication=NoAuthentication
+    ProxyType=Internet
+    URL=<BP OData API URL>
+    URL.headers.APIKey=<Your API Key>
+    ```
+
+14. Update your package.json with **credentials** section as shown below
+    ```
+    "API_BUSINESS_PARTNER": {
+          "kind": "odata-v2",
+          "model": "srv/external/API_BUSINESS_PARTNER",
+          "credentials": {
+            "destination": "BP_DESTINATION",
+            "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
+          }
+      }
+    ```
+
+**NOTE:** While, I was learning this backend odata integration, I thought to add very important documentation link - https://cap.cloud.sap/docs/guides/using-services#feature-overview 
+
+14. Then start the CAP application with the command of your choice
+    ```
+    npm run watch-sales
+    ```
+
+15. For destination service to work properly on the local, you will have to create bindings. Quicker way is to create vcap.json.
+    Go to your deployed application -> Environment Variables -> Get the VCAP_SERVICES section from the JSON.
+    Add this in the vcap.json on your local. If you do not have vcap.json, create one and load it in the env
+    ```
+    export VCAP_SERVICES=$(cat vcap.json)
+    ```
+
+16. CDS will take care of fetching the destination details from destination service. You do not have to write the boiler plate code.
+    The libraries which we added at the start of the section are doing the heavy lifting for you. Enjoy!
+
+15. Add an event handler in [processor-service.js](/srv/processor-service.js) as shown below
+    ```
+    /**
+     * This method validates if the address is present for the customer.
+     * If not then fetches it from backend API.
+     * 
+     * @param {*} request 
+     * @returns 
+     */
+    async enrichCustomerAddress(request) {
+        if(request.length > 1) {
+            return;
+        } else {
+            const customer = request[0].customer;
+            let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
+            if (customerAddress != null) {
+                return;
+            }
+            try {
+                const response = await this.bpapi.tx(request).get(
+                    `/A_BusinessPartner('${customer.ID}')/to_BusinessPartnerAddress`
+                );
+                console.log("API Response:", JSON.stringify(response, null, 2));
+                if (response && response.length > 0) {
+                    const apiAddress = response[0];
+                    const backendAddressForCustomer = {
+                        ID: apiAddress.AddressID,
+                        streetAddress: apiAddress.StreetName != "" ? apiAddress.StreetName : "NA",
+                        city: apiAddress.Region != "" ? apiAddress.Region : "NA",
+                        postCode: apiAddress.PostalCode != "" ? apiAddress.PostalCode : "NA",
+                        country: apiAddress.Country != "" ? apiAddress.Country : "NA",
+                        addressTimeZone: apiAddress.AddressTimeZone != "" ? apiAddress.AddressTimeZone : "NA"
+                    }
+                    customer.addresses = [backendAddressForCustomer];
+                }
+            } catch (error) {
+                console.error("Error fetching address:", error.message);
+            }
+        }
+    }
+    ```
+
+16. Last step, to show it on UI, add a "Customer Address" section in the List Object Page. Refer this section of the tutorial - For quick reference you can refer step 5  of this [Configuring Object Page View](https://developers.sap.com/tutorials/add-fiori-elements-uis.html#9f8b34a1-68f8-41fa-af2a-2cf74428a909)
+
+17. Test the application on your local. Build and deploy the application on BTP.
+    ```
+    mbt build && cf deploy mta_archives/sales-commission_1.0.0.mtar
+    ```
+ 
+18. **You have successfully integrated backend OData API and learnt below:**
+    - Integrated Business Partner OData API
+    - Configured destination and integrated with destination service
+    - Implemented  "after read" event handler
+    - Added a new UI section "Customer Address" in the existing application.
+
 # Troubleshooting tips
 
 1. If you have error loading your application after deployment on BTP please compare the below files properly.
@@ -462,4 +619,6 @@ as the supporting entitlements will not be available. **NOTE: Installing the ser
 
 ## Learn More 
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+1. Learn more at https://cap.cloud.sap/docs/get-started/.
+2. https://cap.cloud.sap/docs/guides/using-services#feature-overview
+3. https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js 
