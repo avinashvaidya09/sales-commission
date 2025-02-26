@@ -562,7 +562,7 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
         } else {
             const customer = request[0].customer;
             let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
-            if (customerAddress != null) {
+            if (customerAddress) {
                 return;
             }
             try {
@@ -595,12 +595,35 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
     ```
     mbt build && cf deploy mta_archives/sales-commission_1.0.0.mtar
     ```
- 
+
+18. To reduce the backend API calls and optimize the performance, I added in memory cache. Fragment is shown below:
+    ```
+    //Caching to reduce backend API calls
+    const cacheKey = `address_${customer.ID}`;
+    const cacheAddressData = this.cache.get(cacheKey);
+    if (cacheAddressData) {
+        customer.addresses = [cacheAddressData];
+        return;
+    }
+    ```
+    Check the **enrichCustomerAddress** method for complete logic of setting and getting from cache.
+    In production scenarios, it is adviced to leverage distributed cache like Redis. Refer this blog - https://community.sap.com/t5/technology-blogs-by-sap/redis-on-sap-btp-introduction-to-start-using-the-service/ba-p/13736497 
+    for more understanding.
+
 18. **You have successfully integrated backend OData API and learnt below:**
     - Integrated Business Partner OData API
     - Configured destination and integrated with destination service
     - Implemented  "after read" event handler
+    - Implemented in memory caching.
     - Added a new UI section "Customer Address" in the existing application.
+
+
+# Let's create calculation views and expose it as a OData service.
+
+In this concluding lesson of our long learning journey, we will learn how to create a calculation view and expose it as an OData API.
+Let us get started.
+
+
 
 # Troubleshooting tips
 
@@ -622,3 +645,4 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
 1. Learn more at https://cap.cloud.sap/docs/get-started/.
 2. https://cap.cloud.sap/docs/guides/using-services#feature-overview
 3. https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js 
+4. https://api.sap.com/api/API_BUSINESS_PARTNER
