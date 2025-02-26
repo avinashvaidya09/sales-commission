@@ -672,6 +672,7 @@ In this section we will just focus on exposing a SALES view as a OData API.
 7. Run CDS build to ensure there are no errors.
 
 8. Deploy to the database using **SAP HANA PROJECTS** view without fail
+
    ![Alt text](assets/Deploy_To_DB.png)
   
 9. To test this locally, you might have to change the db from **sqlite** to **hana** in [package.json](/package.json) as shown below. Revert it if not required.
@@ -687,25 +688,34 @@ In this section we will just focus on exposing a SALES view as a OData API.
 
 11. Click on it and you will see the OData API exposing the data from the calculation view.
 
-12. Deploy the complete application to BTP
+
+12. As mentioned in the start of the section, the calculation views might be required by external system. 
+    You have to ensure, you expose it securely. Add the below authorities in the [xs-security.json](/xs-security.json)
+
+    ```
+    "authorities": [
+        "$XSAPPNAME.sales_representative", "$XSAPPNAME.sales_manager"
+    ]
+    ```
+    The above fragment will give roles to the client id and client secret of the xsuaa instance.
+
+13. Deploy the complete application to BTP
     ```
     mbt build && cf deploy mta_archives/sales-commission_1.0.0.mtar
     ```
 
-13. As mentioned in the start of the section, the calculation views might be required by external system. 
-    You have to ensure, you expose it securely. TBD
-
-    ```
-    "authorities": [
-        "$XSAPPNAME.read"
-    ]
-    ```
+14. To validate use postman/insomnia:
+    - Get the client id , client secret and auth token url from the XSUAA instance service key.
+    - Create an HTTP request in insomnia and get the access token.
+    - Create another HTTP request with the url - https://<host>/odata/v4/processor/V_Sales. Add *Authorization* in the header.
+    - You should get the response.
 
 
-13. **You have successfully integrated HANA native artifacts and learnt below:**
+15. **You have successfully integrated HANA native artifacts and learnt below:**
     - Create calculation view
     - Create CDS entity for calculation view using hana cli
     - Expose calculation view as a OData API
+    - Deployed it to BTP and exposed it to external client/system securely.
   
     
 # Troubleshooting tips
@@ -725,7 +735,15 @@ In this section we will just focus on exposing a SALES view as a OData API.
 
 ## Learn More 
 
-1. Learn more at https://cap.cloud.sap/docs/get-started/.
-2. https://cap.cloud.sap/docs/guides/using-services#feature-overview
-3. https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js 
-4. https://api.sap.com/api/API_BUSINESS_PARTNER
+
+1. **Essentials of CAPM:** 
+    - https://cap.cloud.sap/docs/get-started/.
+    - https://cap.cloud.sap/docs/guides/using-services#feature-overview
+    - https://cap.cloud.sap/docs/guides/using-services#use-destinations-with-node-js 
+4. **UI5 Basics:** https://www.youtube.com/watch?v=C9cK2Z2JDLg 
+5. **SAP Business Accelerator HUB:** https://api.sap.com/api/API_BUSINESS_PARTNER
+6. **SAP Learning Journeys:**
+    - https://developers.sap.com/group.cap-application-full-stack.html
+    - https://help.sap.com/docs/btp/sap-business-technology-platform/tutorials-for-sap-authorization-and-trust-management-service 
+    - https://developers.sap.com/group.deploy-full-stack-cap-application.html 
+    - https://developers.sap.com/tutorials/hana-cloud-cap-calc-view..html 

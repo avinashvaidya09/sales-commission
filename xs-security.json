@@ -41,6 +41,6 @@
     }
   ],
   "authorities": [
-        "$XSAPPNAME.read"
+        "$XSAPPNAME.sales_representative", "$XSAPPNAME.sales_manager"
   ]
 }
