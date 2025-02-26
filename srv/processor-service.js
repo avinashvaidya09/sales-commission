@@ -1,5 +1,5 @@
 const cds = require('@sap/cds');
-
+const NodeCache = require("node-cache")
 
 class ProcessorService extends cds.ApplicationService {
 
@@ -10,6 +10,7 @@ class ProcessorService extends cds.ApplicationService {
     async init() {
         // Connect to API_BUSINESS_PARTNER
         this.bpapi = await cds.connect.to('API_BUSINESS_PARTNER');
+        this.cache = new NodeCache({stdTTL: 200});
         this.before("UPDATE", "Sales", (request) => this.validateOnUpdate(request));
         this.before(["CREATE", "UPDATE"], "Sales", (request) => this.updateProductPriceOnSaleRecord(request));
         this.before("UPDATE", "Sales", (request) => this.updatePricing(request));
@@ -101,7 +102,7 @@ class ProcessorService extends cds.ApplicationService {
      * @returns 
      */
     async enrichCustomerAddress(request) {
-        if( request && request.length > 1) {
+        if(request && request.length > 1) {
             return;
         } else {
             const customer = request[0].customer;
@@ -110,6 +111,13 @@ class ProcessorService extends cds.ApplicationService {
             }
             let customerAddress = customer.addresses != null ? customer.addresses[0] : null;
             if (customerAddress) {
+                return;
+            }
+            //Caching to reduce backend API calls
+            const cacheKey = `address_${customer.ID}`;
+            const cacheAddressData = this.cache.get(cacheKey);
+            if (cacheAddressData) {
+                customer.addresses = [cacheAddressData];
                 return;
             }
             try {
@@ -127,6 +135,7 @@ class ProcessorService extends cds.ApplicationService {
                         country: apiAddress.Country != "" ? apiAddress.Country : "NA",
                         addressTimeZone: apiAddress.AddressTimeZone != "" ? apiAddress.AddressTimeZone : "NA"
                     }
+                    this.cache.set(cacheKey, backendAddressForCustomer);
                     customer.addresses = [backendAddressForCustomer];
                 }
             } catch (error) {
