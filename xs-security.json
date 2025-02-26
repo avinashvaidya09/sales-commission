@@ -39,5 +39,8 @@
       ],
       "attribute-references": []
     }
+  ],
+  "authorities": [
+        "$XSAPPNAME.sales_representative", "$XSAPPNAME.sales_manager"
   ]
 }
