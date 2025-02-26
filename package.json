@@ -70,7 +70,7 @@
             "destination": "BP_DESTINATION",
             "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
           }
-      }
+        }
       },
       "[production]": {
         "db": "hana",
@@ -80,12 +80,12 @@
       "destinations": true,
       "workzone": true,
       "API_BUSINESS_PARTNER": {
-          "kind": "odata-v2",
-          "model": "srv/external/API_BUSINESS_PARTNER",
-          "credentials": {
-            "destination": "BP_DESTINATION",
-            "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
-          }
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER",
+        "credentials": {
+          "destination": "BP_DESTINATION",
+          "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER"
+        }
       }
     },
     "sql": {

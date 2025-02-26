@@ -618,13 +618,96 @@ You can see the [API_BUSINESS_PARTNER.edmx](API_BUSINESS_PARTNER.edmx) in the re
     - Added a new UI section "Customer Address" in the existing application.
 
 
-# Let's create calculation views and expose it as a OData service.
+# Exposing existing calculation view as an OData API.
 
-In this concluding lesson of our long learning journey, we will learn how to create a calculation view and expose it as an OData API.
-Let us get started.
+In this concluding lesson of our long learning journey, we will learn how to expose a calculation view as an OData API.
+There are scenarios when customer has calculation views created in the HANA cloud and they want to expose it as a service
+to external applications or SAP Analytics cloud (SAC).
+
+**Pre-Requisite:** It is assumed that you have already created calculation view. If not follow this [tutorial](https://developers.sap.com/tutorials/hana-cloud-cap-calc-view..html#11eae925-d53b-4f56-96cc-8a81e5e8fed7)
+
+In this section we will just focus on exposing a SALES view as a OData API.
+
+1. I have created a simple view - V_SALES as shown in the image below
+   ![Alt text](assets/V_SALES.png)
+
+2. If you see in the database explorer you should see a calculation view and data.
+
+3. Next important step is to refactor the [schema.cds](/db/schema.cds). Check the commit history, how it was at the start of the project.
+
+4. Run the below command to get the calculation view entity definition inside your **db** folder or from inside your **gen/db** where there is .env file.
+    ```
+    hana-cli inspectView -v V_SALES -o cds
+    ```
+
+5. The above command will generate the entity model for the calculation view as shown below. Copy this into your [schema.cds](/db/schema.cds)
+    ```
+    @cds.persistence.exists 
+    @cds.persistence.calcview 
+    Entity V_SALES {
+    key     TITLE: String(5000)  @title: 'TITLE: TITLE' ; 
+            STATUS_CODE: String(5000)  @title: 'STATUS_CODE: STATUS_CODE' ; 
+            PRODUCT_ID: String(5000)  @title: 'PRODUCT_ID: PRODUCT_ID' ; 
+            CUSTOMER_ID: String(5000)  @title: 'CUSTOMER_ID: CUSTOMER_ID' ; 
+            QUANTITY: Integer  @title: 'QUANTITY: QUANTITY' ; 
+            PRODUCTPRICE: Decimal(15)  @title: 'PRODUCTPRICE: PRODUCTPRICE' ; 
+            SALEPRICE: Decimal(15)  @title: 'SALEPRICE: SALEPRICE' ; 
+            TOTALSALEPRICE: Decimal(15)  @title: 'TOTALSALEPRICE: TOTALSALEPRICE' ; 
+            CURRENCY_CODE: String(3)  @title: 'CURRENCY_CODE: CURRENCY_CODE' ; 
+            COMMISSION: Decimal(15)  @title: 'COMMISSION: COMMISSION' ; 
+            FIRSTNAME: String(5000)  @title: 'FIRSTNAME: FIRSTNAME' ; 
+            LASTNAME: String(5000)  @title: 'LASTNAME: LASTNAME' ; 
+            EMAIL: String(5000)  @title: 'EMAIL: EMAIL' ; 
+            PHONE: String(5000)  @title: 'PHONE: PHONE' ; 
+            STREETADDRESS: String(5000)  @title: 'STREETADDRESS: STREETADDRESS' ; 
+            CITY: String(5000)  @title: 'CITY: CITY' ; 
+            POSTCODE: String(5000)  @title: 'POSTCODE: POSTCODE' ; 
+            COUNTRY: String(5000)  @title: 'COUNTRY: COUNTRY' ; 
+            ADDRESSTIMEZONE: String(5000)  @title: 'ADDRESSTIMEZONE: ADDRESSTIMEZONE' ; 
+    }
+    ```
+
+6. Add the calculation view based entity to the CAP service in the [processor-service.cds](/srv/processor-service.cds)
+
+7. Run CDS build to ensure there are no errors.
+
+8. Deploy to the database using **SAP HANA PROJECTS** view without fail
+   ![Alt text](assets/Deploy_To_DB.png)
+  
+9. To test this locally, you might have to change the db from **sqlite** to **hana** in [package.json](/package.json) as shown below. Revert it if not required.
+    ```
+    "db": {
+          "kind": "hana"
+        }
+    ```
+
+10. Start the server locally and you should see **V_Sales** service as shown in the below image.
+    ![Alt text](assets/V_SALES_ODATA.png)
 
 
+11. Click on it and you will see the OData API exposing the data from the calculation view.
 
+12. Deploy the complete application to BTP
+    ```
+    mbt build && cf deploy mta_archives/sales-commission_1.0.0.mtar
+    ```
+
+13. As mentioned in the start of the section, the calculation views might be required by external system. 
+    You have to ensure, you expose it securely. TBD
+
+    ```
+    "authorities": [
+        "$XSAPPNAME.read"
+    ]
+    ```
+
+
+13. **You have successfully integrated HANA native artifacts and learnt below:**
+    - Create calculation view
+    - Create CDS entity for calculation view using hana cli
+    - Expose calculation view as a OData API
+  
+    
 # Troubleshooting tips
 
 1. If you have error loading your application after deployment on BTP please compare the below files properly.

@@ -1,4 +1,5 @@
 using {com.commission.sales as sales} from '../db/schema';
+using { V_SALES  } from '../db/schema';
 
 /*
 * Service used by Sales Service representatives and managers.
@@ -13,6 +14,9 @@ service ProcessorService {
     entity Customers        as projection on sales.Customers;
     @readonly
     entity Addresses as projection on sales.Addresses;
+
+    @readonly
+    entity V_Sales as projection on V_SALES;
 
 }
 
