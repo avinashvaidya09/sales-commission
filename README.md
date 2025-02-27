@@ -31,9 +31,13 @@ for details of that particular topic. This will surely help you on your way.
 
 A company pioneering pre-owned vehicle sales needs a **Sales Commission Management Application** to streamline the commission calculation process for its employees. The application enables sales representatives to record and update sales transactions efficiently. Once a sale is completed, a sales manager reviews and approves it before final closure.
 
+The sales manager should also be able to maintain the commission config for the application.
+
 The system maintains essential business data, including sales records, customer details, product data and customer address information. If a customer’s address is not available in the internal database, the application automatically retrieves it from the S/4HANA backend system to ensure data accuracy and completeness.
 
 Additionally, the application must provide a comprehensive sales data for analysis. To support third-party analytics tools, it must expose a calculation view as a API, allowing for in-depth reporting and business insights.
+
+Maintain appropriate roles to ensure proper authorization of the application. The application should be accessible from the company's work zone. Application and OData APIs should be secured.
 
 # Set up the *sales-commission* CAP Project
 
