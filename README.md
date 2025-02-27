@@ -170,7 +170,7 @@ the application to be production ready.
 
 ## Set up SAP HANA Cloud
 
-Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). 
+Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). \n
     ```
     cds add hana --for production
     ```
