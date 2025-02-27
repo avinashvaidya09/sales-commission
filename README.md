@@ -170,17 +170,17 @@ the application to be production ready.
 
 ## Set up SAP HANA Cloud
 
-Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+    Add SAP HANA Cloud client to your application. The below command will make changes to the [package.json](package.json). 
     ```
     cds add hana --for production
     ```
-    The above command will generate files like - undeploy.json, .hdiconfig as well.
+    The above command will generate files like - undeploy.json, .hdiconfig as well. Check your changes in github working tree.
     Deployments in BTP are done using production profile by default.
     
     Start your application on local and it should be working as is. If it is not, then revisit and fix the issue.
 
 ## Add XSUAA support
-Next is to configure XSUAA service for authentication and trust management. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
+    Next is to configure XSUAA service for authentication and trust management. The below command will make changes to the [package.json](package.json). Check your changes in github working tree.
     ```
     cds add xsuaa --for production
     ```
