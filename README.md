@@ -39,6 +39,12 @@ Additionally, the application must provide a comprehensive sales data for analys
 
 Maintain appropriate roles to ensure proper authorization of the application. The application should be accessible from the company's work zone. Application and OData APIs should be secured.
 
+# Architecture
+
+Below diagram showcases important components of the project and BTP services leveraged in the development of the project.
+
+![Alt text](assets/BTP_Application_Extensions.drawio.png)
+
 # Set up the *sales-commission* CAP Project
 
 1. Create *CAP Project* from template. 
