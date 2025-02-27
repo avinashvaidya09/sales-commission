@@ -27,7 +27,7 @@ help you understand the changes. Feel free to explore other commits in the git r
 3. Throughout the README.md file, I have added SAP offcial developer tutorials for configurations which you can refer
 for details of that particular topic. This will surely help you on your way.
 
-# Use Case Statement
+# Use Case
 
 A company pioneering pre-owned vehicle sales needs a **Sales Commission Management Application** to streamline the commission calculation process for its employees. The application enables sales representatives to record and update sales transactions efficiently. Once a sale is completed, a sales manager reviews and approves it before final closure.
 
