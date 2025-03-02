@@ -79,7 +79,7 @@ Below diagram showcases important components of the project and BTP services lev
 
 5. Start adding content, in [db/schema.cds](db/schema.cds). Define sales entities required for the application.
 
-6. Define the service. I have created file - [srv/processor-service.cds](srv/processor-service.cds). 
+6. Define the service. I have created file - [srv/sales-service.cds](https://github.com/avinashvaidya09/sales-commission/commit/46851dc6af7339b88fb8b524e3df423de0a2e4ab#diff-8385f634c376cd1167277f5c054f0925a18b034d7c4bd1852e3feac9360f7eb5). 
 
 7. Add data to the in memory database.
     ```
