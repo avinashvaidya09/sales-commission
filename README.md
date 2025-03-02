@@ -79,7 +79,7 @@ Below diagram showcases important components of the project and BTP services lev
 
 5. Start adding content, in [db/schema.cds](db/schema.cds). Define sales entities required for the application.
 
-6. Define the service. I have created file - [srv/sales-service.cds](srv/sales-service.cds). 
+6. Define the service. I have created file - [srv/processor-service.cds](srv/processor-service.cds). 
 
 7. Add data to the in memory database.
     ```
@@ -87,7 +87,7 @@ Below diagram showcases important components of the project and BTP services lev
     ```
 8. Now, fill the test data. The above command will generate csv files in the [db/data](db/data) folder. You can copy that data or reuse the csv files in your project.
 
-10. Open the mta.yaml and understand the structure of the file. You will see modules and resources. [Refer for details](https://www.sap.com/documents/2016/06/e2f618e4-757c-0010-82c7-eda71af511fa.html)
+10. Open the mta.yaml and understand the structure of the file. You will see modules and resources. To learn more about [MTA](https://www.sap.com/documents/2016/06/e2f618e4-757c-0010-82c7-eda71af511fa.html)
 
 11. **You have successfully** 
     - Created a CAP project, 
